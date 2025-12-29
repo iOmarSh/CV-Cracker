@@ -108,10 +108,11 @@ export default function PremiumNavbar() {
                                 href="/dashboard"
                                 className="
                                     relative px-6 py-2.5 text-sm font-bold
-                                    bg-gradient-to-r from-[#2EFF8A] to-[#26d975]
-                                    text-[#0f1113]
+                                    text-[#2EFF8A]
+                                    border border-[#2EFF8A]
                                     rounded-full
-                                    hover:shadow-[0_0_30px_rgba(46,255,138,0.4)]
+                                    hover:bg-[#2EFF8A] hover:text-[#0f1113]
+                                    hover:shadow-[0_0_20px_rgba(46,255,138,0.4)]
                                     transition-all duration-300
                                     hover:scale-105
                                     overflow-hidden
@@ -119,8 +120,8 @@ export default function PremiumNavbar() {
                                 "
                             >
                                 <span className="relative z-10">Get Started</span>
-                                {/* Shimmer effect */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                                {/* Background fill animation */}
+                                <div className="absolute inset-0 bg-[#2EFF8A] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left -z-0"></div>
                             </Link>
                         </>
                     )}
