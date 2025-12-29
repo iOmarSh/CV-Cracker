@@ -1,4 +1,4 @@
-# Ready For Hire - ATS Cracker <img src="frontend/public/bug.svg" alt="Screenshot" width="40" height="35">
+# Ready For Hire - ATS Cracker
 
 
 ## Description
@@ -48,19 +48,6 @@ but [Important] to keep the order of the sections in the same order as the origi
 
 
 Screenshot:
-
-![Screenshot](frontend/public/ats1.png)
-![Screenshot](frontend/public/ats2.png)
-![Screenshot](frontend/public/about/1.png)
-![Screenshot](frontend/public/about/2.png)
-![Screenshot](frontend/public/about/3.png)
-![Screenshot](frontend/public/about/4.png)
-![Screenshot](frontend/public/about/5.png)
-![Screenshot](frontend/public/about/6.png)
-![Screenshot](frontend/public/about/7.png)
-![Screenshot](frontend/public/about/8.png)
-
-
 
 
 
