@@ -83,12 +83,12 @@ export default function RegisterModal({ onChangeModal, closeModal }) {
     };
 
     return (
-        <div className="fixed inset-0 flex items-start justify-center p-4" style={{ top: "10%" }}>
+        <div className="fixed inset-0 flex items-start justify-center overflow-y-auto py-8">
             <Dialog.Panel
                 className="w-full max-w-md h-auto transform overflow-hidden
                 rounded-2xl bg-[#111316] p-6 text-left align-middle shadow-[0_0_30px_rgba(0,0,0,0.5)]
                 transition-all pt-6 sm:p-12 sm:pt-8 md:min-h-min
-                md:min-w-[500px] md:p-14 md:pt-10 lg:p-16 lg:pt-12 border border-[#2a2d32]"
+                md:min-w-[500px] md:p-14 md:pt-10 lg:p-16 lg:pt-12 border border-[#2a2d32] my-auto"
             >
                 <Dialog.Title
                     as="h1"

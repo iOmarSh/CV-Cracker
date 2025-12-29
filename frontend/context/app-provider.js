@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import AppContext from './app-context';
 import { getEmailAndName } from "@/lib/utils";
 import { cvCreateUpdate, cvGetAction } from "@/actions/cvs";
@@ -15,6 +15,9 @@ const AppProvider = ({ children }) => {
     const [lastControlPanel, setLastControlPanel] = useState(0);
     const [currentEditIndex, setCurrentEditIndex] = useState({});
 
+    // Save lock to prevent duplicate saves
+    const isSaving = useRef(false);
+    const saveTimeoutRef = useRef(null);
 
     const [user, setUser] = useState(null);
     const isAuthenticated = !!user;
@@ -33,16 +36,36 @@ const AppProvider = ({ children }) => {
 
     };
 
-
-    const syncResumeData = async (data) => {
-        const response = await cvCreateUpdate(data);
-        if (response.success && resumeData.id === 'new') {
-            setResumeData({
-                ...response.response
-            });
-
+    // Debounced auto-save function
+    const syncResumeData = useCallback(async (data) => {
+        // Clear any pending save
+        if (saveTimeoutRef.current) {
+            clearTimeout(saveTimeoutRef.current);
         }
-    }
+
+        // Debounce: wait 1 second before saving
+        saveTimeoutRef.current = setTimeout(async () => {
+            // Prevent duplicate saves
+            if (isSaving.current) {
+                return;
+            }
+
+            isSaving.current = true;
+
+            try {
+                const response = await cvCreateUpdate(data);
+                if (response.success && data.id === 'new') {
+                    setResumeData({
+                        ...response.response
+                    });
+                }
+            } catch (error) {
+                console.error('Error saving CV:', error);
+            } finally {
+                isSaving.current = false;
+            }
+        }, 1000);
+    }, []);
 
     // Default CV with the template data
     const defaultCv = {
