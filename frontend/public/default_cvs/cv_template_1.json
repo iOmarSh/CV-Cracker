@@ -1,0 +1,247 @@
+{
+  "name": "Niggaro Bagaro",
+  "position": "AI Engineer",
+  "contactInformation": "01098765432",
+  "email": "niggaro-bagaro@example.com",
+  "address": "Tanta, Egypt",
+  "socialMedia": [
+    {
+      "socialMedia": "LinkedIn",
+      "link": "https://www.linkedin.com/in/niggaro-bagaro",
+      "displayName": "linkedin.com/in/niggaro-bagaro"
+    },
+    {
+      "socialMedia": "Github",
+      "link": "https://www.github.com/niggaro-baggaro",
+      "displayName": "github.com/niggaro-baggaro"
+    }
+  ],
+  "summary": [
+    {
+      "text": "Final-year Software Engineering student specializing in Artificial Intelligence and Machine Learning. Built and evaluated 10+ ML models across NLP and computer vision tasks, achieving up to 88% accuracy. Strong analytical thinker and collaborative team member with hands-on experience delivering practical, data-driven AI solutions.",
+      "isShownInPreview": true
+    }
+  ],
+  "educations": [
+    {
+      "school": "Arab Academy for Science, Technology & Maritime Transport, Egypt",
+      "degree": "B.Sc. in Software Engineering",
+      "startYear": "2021-10-01",
+      "endYear": "2025-07-01",
+      "notes": "GPA: 3.5 / 4.0",
+      "isShownInPreview": true
+    }
+  ],
+  "courses": [
+    {
+      "name": "Applied Machine Learning & AI Development",
+      "school": "AASTMT & Online Platforms",
+      "startYear": "",
+      "endYear": "",
+      "link": "",
+      "notes": [
+        {
+          "text": "Completed 120+ hours of structured training in machine learning, deep learning, model evaluation, and optimization techniques.",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Implemented 8+ end-to-end ML pipelines including data cleaning, feature engineering, model training, validation, and performance tuning.",
+          "isShownInPreview": true
+        }
+      ],
+      "isShownInPreview": true
+    }
+  ],
+  "workExperience": [
+    {
+      "company": "TechNova Labs",
+      "position": "AI Engineer Intern",
+      "startYear": "2023-07-01",
+      "endYear": "2023-09-01",
+      "workType": "On-site",
+      "location": "Cairo, Egypt",
+      "companyField": "Software & AI Solutions",
+      "technologies": [
+        "Python",
+        "Deep Learning",
+        "TensorFlow",
+        "Computer Vision"
+      ],
+      "achievements": [
+        {
+          "text": "Built and evaluated computer vision models for image classification and object detection, achieving 90%+ accuracy on internal validation datasets.",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Contributed to 3 client-facing AI prototypes and reduced model inference time by 18% through performance optimization and model pruning techniques.",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Participated in code reviews, model evaluations, and technical documentation to support production readiness and knowledge transfer.",
+          "isShownInPreview": true
+        }
+      ],
+      "isPartTime": false,
+      "isShownInPreview": true
+    }
+  ],
+  "projects": [
+    {
+      "title": "Smart Resume Analyzer",
+      "description": "AI-based system for analyzing, scoring, and matching resumes against job descriptions using natural language processing techniques.",
+      "technologies": [
+        {
+          "text": "Python",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Natural Language Processing",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Scikit-learn",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Flask",
+          "isShownInPreview": true
+        }
+      ],
+      "link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1",
+      "startYear": "",
+      "endYear": "",
+      "achievements": [
+        {
+          "text": "Developed an NLP-based system that extracted and ranked 1,000+ skills and keywords from resumes, improving resume-to-job matching accuracy by 35%.",
+          "isShownInPreview": true
+        }
+      ],
+      "isShownInPreview": true
+    },
+    {
+      "title": "Intelligent Student Performance Predictor",
+      "description": "Machine learning system for predicting academic performance using historical student data and statistical features.",
+      "technologies": [
+        {
+          "text": "Python",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Machine Learning",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Pandas",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Matplotlib",
+          "isShownInPreview": true
+        }
+      ],
+      "link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1",
+      "achievements": [
+        {
+          "text": "Trained and evaluated 6 different machine learning models and achieved up to 85% prediction accuracy on unseen test data.",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Performed feature analysis and model comparison to identify the most influential academic performance indicators.",
+          "isShownInPreview": true
+        }
+      ],
+      "isShownInPreview": true
+    }
+  ],
+  "skills": [
+    {
+      "title": "Programming Languages",
+      "skills": [
+        {
+          "text": "Python",
+          "isShownInPreview": true
+        },
+        {
+          "text": "C++",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Java",
+          "isShownInPreview": true
+        }
+      ],
+      "isShownInPreview": true
+    },
+    {
+      "title": "Machine Learning & Data",
+      "skills": [
+        {
+          "text": "Machine Learning",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Deep Learning",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Data Analysis",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Scikit-learn",
+          "isShownInPreview": true
+        }
+      ],
+      "isShownInPreview": true
+    },
+    {
+      "title": "Soft Skills",
+      "skills": [
+        {
+          "text": "Problem Solving & Logical Thinking",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Critical Thinking & Analysis",
+          "isShownInPreview": true
+        },
+        {
+          "text": "Clear Technical Communication",
+          "isShownInPreview": true
+        }
+      ],
+      "isShownInPreview": true
+    }
+  ],
+  "languages": [
+    {
+      "title": "English",
+      "level": "Fluent",
+      "isShownInPreview": true
+    },
+    {
+      "title": "Arabic",
+      "level": "Native",
+      "isShownInPreview": true
+    }
+  ],
+  "titles": {
+    "profile": "PROFILE",
+    "experience": "WORK EXPERIENCE",
+    "education": "EDUCATION",
+    "certification": "ACHIEVEMENTS & LEADERSHIP",
+    "skills": "TECHNICAL SKILLS",
+    "languages": "LANGUAGES",
+    "projects": "PROJECTS"
+  },
+  "order": [
+    "contactInformation",
+    "profile",
+    "workExperience",
+    "projects",
+    "education",
+    "courses",
+    "skills",
+    "languages"
+  ]
+}

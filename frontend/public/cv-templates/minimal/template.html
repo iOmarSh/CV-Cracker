@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Preview</title>
+    <style>
+        /* CV Template Styles - Completely isolated from app shell */
+        
+        /* Reset ONLY for CV */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Page setup for print */
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        
+        @media print {
+            html, body {
+                width: 210mm;
+                height: 297mm;
+            }
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+        
+        /* Font embedding - CV fonts only */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        /* Base styles */
+        html {
+            font-size: 10pt;
+        }
+        
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.4;
+            color: #1a1a1a;
+            background: #ffffff;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .cv-container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 10mm;
+            background: #ffffff;
+        }
+        
+        /* Header / Contact */
+        .cv-header {
+            text-align: center;
+            margin-bottom: 12pt;
+            padding-bottom: 8pt;
+            border-bottom: 1.5pt solid #1a1a1a;
+        }
+        
+        .cv-name {
+            font-size: 18pt;
+            font-weight: 700;
+            letter-spacing: 0.5pt;
+            margin-bottom: 4pt;
+            color: #000000;
+        }
+        
+        .cv-position {
+            font-size: 11pt;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 6pt;
+        }
+        
+        .cv-contact {
+            font-size: 9pt;
+            color: #444444;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8pt;
+        }
+        
+        .cv-contact a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .cv-contact a:hover {
+            text-decoration: underline;
+        }
+        
+        .cv-contact-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 3pt;
+        }
+        
+        .cv-contact-separator {
+            color: #888888;
+        }
+        
+        /* Sections */
+        .cv-section {
+            margin-bottom: 10pt;
+        }
+        
+        .cv-section-title {
+            font-size: 11pt;
+            font-weight: 700;
+            text-transform: capitalize;
+            color: #000000;
+            border-bottom: 1pt solid #cccccc;
+            padding-bottom: 2pt;
+            margin-bottom: 6pt;
+        }
+        
+        /* Profile/Summary */
+        .cv-summary {
+            font-size: 10pt;
+            line-height: 1.5;
+            color: #222222;
+            text-align: justify;
+        }
+        
+        /* Experience & Education Items */
+        .cv-item {
+            margin-bottom: 8pt;
+        }
+        
+        .cv-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 4pt;
+        }
+        
+        .cv-item-title {
+            font-size: 10pt;
+            font-weight: 700;
+            color: #000000;
+        }
+        
+        .cv-item-subtitle {
+            font-size: 10pt;
+            font-weight: 500;
+            color: #333333;
+        }
+        
+        .cv-item-date {
+            font-size: 9pt;
+            color: #555555;
+            white-space: nowrap;
+        }
+        
+        .cv-item-location {
+            font-size: 9pt;
+            color: #666666;
+            font-style: italic;
+        }
+        
+        .cv-item-technologies {
+            font-size: 9pt;
+            color: #444444;
+            margin-top: 2pt;
+        }
+        
+        .cv-item-technologies strong {
+            font-weight: 600;
+        }
+        
+        /* Bullet lists */
+        .cv-bullets {
+            list-style-type: disc;
+            padding-left: 14pt;
+            margin-top: 3pt;
+        }
+        
+        .cv-bullets li {
+            font-size: 10pt;
+            line-height: 1.4;
+            margin-bottom: 2pt;
+            color: #222222;
+        }
+        
+        /* Skills */
+        .cv-skills-group {
+            margin-bottom: 4pt;
+        }
+        
+        .cv-skills-title {
+            font-size: 10pt;
+            font-weight: 600;
+            color: #000000;
+            display: inline;
+        }
+        
+        .cv-skills-list {
+            font-size: 10pt;
+            color: #333333;
+            display: inline;
+        }
+        
+        /* Languages */
+        .cv-languages {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12pt;
+        }
+        
+        .cv-language-item {
+            font-size: 10pt;
+        }
+        
+        .cv-language-name {
+            font-weight: 600;
+            color: #000000;
+        }
+        
+        .cv-language-level {
+            color: #555555;
+        }
+        
+        /* Links */
+        .cv-link {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 9pt;
+        }
+        
+        .cv-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* GPA styling */
+        .cv-gpa {
+            font-size: 9pt;
+            color: #444444;
+            margin-top: 2pt;
+        }
+        
+        /* Print optimizations */
+        @media print {
+            .cv-section {
+                page-break-inside: avoid;
+            }
+            .cv-item {
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* ATS-safe mode (single column, simplified) */
+        .ats-safe .cv-header {
+            text-align: left;
+        }
+        .ats-safe .cv-contact {
+            justify-content: flex-start;
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container" id="cv-content">
+        <!-- CV content will be injected here -->
+    </div>
+    
+    <script>
+        // Listen for CV data from parent window
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'CV_DATA') {
+                renderCV(event.data.cvData);
+            }
+            if (event.data && event.data.type === 'ATS_MODE') {
+                document.body.classList.toggle('ats-safe', event.data.enabled);
+            }
+        });
+        
+        function renderCV(data) {
+            if (!data) return;
+            
+            const container = document.getElementById('cv-content');
+            let html = '';
+            
+            // Header
+            html += '<header class="cv-header">';
+            html += `<h1 class="cv-name">${escapeHtml(data.name || '')}</h1>`;
+            if (data.position) {
+                html += `<p class="cv-position">${escapeHtml(data.position)}</p>`;
+            }
+            html += '<div class="cv-contact">';
+            if (data.email) {
+                html += `<span class="cv-contact-item"><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></span>`;
+            }
+            if (data.contactInformation) {
+                html += `<span class="cv-contact-separator">|</span>`;
+                html += `<span class="cv-contact-item">${escapeHtml(data.contactInformation)}</span>`;
+            }
+            if (data.address) {
+                html += `<span class="cv-contact-separator">|</span>`;
+                html += `<span class="cv-contact-item">${escapeHtml(data.address)}</span>`;
+            }
+            if (data.socialMedia && data.socialMedia.length > 0) {
+                data.socialMedia.forEach(sm => {
+                    html += `<span class="cv-contact-separator">|</span>`;
+                    html += `<span class="cv-contact-item"><a href="${escapeHtml(sm.link)}" target="_blank">${escapeHtml(sm.displayName || sm.socialMedia)}</a></span>`;
+                });
+            }
+            html += '</div>';
+            html += '</header>';
+            
+            // Render sections based on order
+            const order = data.order || ['profile', 'workExperience', 'education', 'projects', 'skills', 'languages'];
+            
+            order.forEach(sectionKey => {
+                switch(sectionKey) {
+                    case 'contactInformation':
+                        // Already rendered in header
+                        break;
+                    case 'profile':
+                        html += renderProfile(data);
+                        break;
+                    case 'workExperience':
+                        html += renderWorkExperience(data);
+                        break;
+                    case 'education':
+                        html += renderEducation(data);
+                        break;
+                    case 'projects':
+                        html += renderProjects(data);
+                        break;
+                    case 'courses':
+                        html += renderCourses(data);
+                        break;
+                    case 'skills':
+                        html += renderSkills(data);
+                        break;
+                    case 'languages':
+                        html += renderLanguages(data);
+                        break;
+                }
+            });
+            
+            container.innerHTML = html;
+            
+            // Notify parent that render is complete
+            window.parent.postMessage({ type: 'CV_RENDERED' }, '*');
+        }
+        
+        function renderProfile(data) {
+            const visibleSummary = (data.summary || []).filter(s => s.isShownInPreview);
+            if (visibleSummary.length === 0) return '';
+            
+            const title = (data.titles && data.titles.profile) || 'Profile';
+            let html = `<section class="cv-section"><h2 class="cv-section-title">${toTitleCase(title)}</h2>`;
+            html += '<div class="cv-summary">';
+            visibleSummary.forEach(s => {
+                html += `<p>${escapeHtml(s.text)}</p>`;
+            });
+            html += '</div></section>';
+            return html;
+        }
+        
+        function renderWorkExperience(data) {
+            const visible = (data.workExperience || []).filter(w => w.isShownInPreview);
+            if (visible.length === 0) return '';
+            
+            const title = (data.titles && data.titles.experience) || 'Experience';
+            let html = `<section class="cv-section"><h2 class="cv-section-title">${toTitleCase(title)}</h2>`;
+            
+            visible.forEach(work => {
+                html += '<div class="cv-item">';
+                html += '<div class="cv-item-header">';
+                html += '<div>';
+                html += `<span class="cv-item-title">${escapeHtml(work.position || '')}</span>`;
+                if (work.isPartTime) html += ' <span class="cv-item-subtitle">(Part-Time)</span>';
+                html += '</div>';
+                html += `<span class="cv-item-date">${formatDateRange(work.startYear, work.endYear)}</span>`;
+                html += '</div>';
+                
+                let companyLine = '';
+                if (work.company) companyLine += escapeHtml(work.company);
+                if (work.workType) companyLine += companyLine ? ' - ' + escapeHtml(work.workType) : escapeHtml(work.workType);
+                if (work.location) companyLine += companyLine ? ', ' + escapeHtml(work.location) : escapeHtml(work.location);
+                if (companyLine) {
+                    html += `<p class="cv-item-subtitle">${companyLine}</p>`;
+                }
+                
+                if (work.technologies && work.technologies.length > 0) {
+                    const techList = work.technologies.map(t => typeof t === 'string' ? t : t.text).join(', ');
+                    html += `<p class="cv-item-technologies"><strong>Technologies:</strong> ${escapeHtml(techList)}</p>`;
+                }
+                
+                const visibleAch = (work.achievements || []).filter(a => a.isShownInPreview);
+                if (visibleAch.length > 0) {
+                    html += '<ul class="cv-bullets">';
+                    visibleAch.forEach(ach => {
+                        html += `<li>${escapeHtml(ach.text)}</li>`;
+                    });
+                    html += '</ul>';
+                }
+                html += '</div>';
+            });
+            
+            html += '</section>';
+            return html;
+        }
+        
+        function renderEducation(data) {
+            const visible = (data.educations || []).filter(e => e.isShownInPreview);
+            if (visible.length === 0) return '';
+            
+            const title = (data.titles && data.titles.education) || 'Education';
+            let html = `<section class="cv-section"><h2 class="cv-section-title">${toTitleCase(title)}</h2>`;
+            
+            visible.forEach(edu => {
+                html += '<div class="cv-item">';
+                html += '<div class="cv-item-header">';
+                html += `<span class="cv-item-title">${escapeHtml(edu.degree || '')}</span>`;
+                html += `<span class="cv-item-date">${formatDateRange(edu.startYear, edu.endYear)}</span>`;
+                html += '</div>';
+                if (edu.school) {
+                    html += `<p class="cv-item-subtitle">${escapeHtml(edu.school)}</p>`;
+                }
+                if (edu.notes) {
+                    html += `<p class="cv-gpa">GPA: ${escapeHtml(edu.notes)}</p>`;
+                }
+                html += '</div>';
+            });
+            
+            html += '</section>';
+            return html;
+        }
+        
+        function renderProjects(data) {
+            const visible = (data.projects || []).filter(p => p.isShownInPreview);
+            if (visible.length === 0) return '';
+            
+            const title = (data.titles && data.titles.projects) || 'Projects';
+            let html = `<section class="cv-section"><h2 class="cv-section-title">${toTitleCase(title)}</h2>`;
+            
+            visible.forEach(proj => {
+                html += '<div class="cv-item">';
+                html += '<div class="cv-item-header">';
+                html += '<div>';
+                html += `<span class="cv-item-title">${escapeHtml(proj.title || '')}</span>`;
+                if (proj.link) {
+                    html += ` <a class="cv-link" href="${escapeHtml(proj.link)}" target="_blank">[Link]</a>`;
+                }
+                html += '</div>';
+                const dateStr = formatDateRange(proj.startYear, proj.endYear);
+                if (dateStr && dateStr !== ' - ') {
+                    html += `<span class="cv-item-date">${dateStr}</span>`;
+                }
+                html += '</div>';
+                
+                if (proj.technologies && proj.technologies.length > 0) {
+                    const techList = proj.technologies.map(t => typeof t === 'string' ? t : (t.text || '')).filter(Boolean).join(', ');
+                    if (techList) {
+                        html += `<p class="cv-item-technologies"><strong>Technologies:</strong> ${escapeHtml(techList)}</p>`;
+                    }
+                }
+                
+                const visibleAch = (proj.achievements || []).filter(a => a.isShownInPreview);
+                if (visibleAch.length > 0) {
+                    html += '<ul class="cv-bullets">';
+                    visibleAch.forEach(ach => {
+                        html += `<li>${escapeHtml(ach.text)}</li>`;
+                    });
+                    html += '</ul>';
+                } else if (proj.description) {
+                    html += `<p class="cv-summary">${escapeHtml(proj.description)}</p>`;
+                }
+                html += '</div>';
+            });
+            
+            html += '</section>';
+            return html;
+        }
+        
+        function renderCourses(data) {
+            const visible = (data.courses || []).filter(c => c.isShownInPreview);
+            if (visible.length === 0) return '';
+            
+            const title = (data.titles && data.titles.certification) || 'Contributions and Activities';
+            let html = `<section class="cv-section"><h2 class="cv-section-title">${toTitleCase(title)}</h2>`;
+            html += '<ul class="cv-bullets">';
+            
+            visible.forEach(course => {
+                const visibleNotes = (course.notes || []).filter(n => n.isShownInPreview);
+                visibleNotes.forEach(note => {
+                    html += `<li>${escapeHtml(note.text)}</li>`;
+                });
+            });
+            
+            html += '</ul></section>';
+            return html;
+        }
+        
+        function renderSkills(data) {
+            const visible = (data.skills || []).filter(s => s.isShownInPreview);
+            if (visible.length === 0) return '';
+            
+            const title = (data.titles && data.titles.skills) || 'Skills';
+            let html = `<section class="cv-section"><h2 class="cv-section-title">${toTitleCase(title)}</h2>`;
+            
+            visible.forEach(skillGroup => {
+                const visibleSkills = (skillGroup.skills || []).filter(s => s.isShownInPreview);
+                if (visibleSkills.length > 0) {
+                    const skillList = visibleSkills.map(s => s.text).join(', ');
+                    html += '<div class="cv-skills-group">';
+                    html += `<span class="cv-skills-title">${escapeHtml(skillGroup.title)}: </span>`;
+                    html += `<span class="cv-skills-list">${escapeHtml(skillList)}</span>`;
+                    html += '</div>';
+                }
+            });
+            
+            html += '</section>';
+            return html;
+        }
+        
+        function renderLanguages(data) {
+            const visible = (data.languages || []).filter(l => l.isShownInPreview);
+            if (visible.length === 0) return '';
+            
+            const title = (data.titles && data.titles.languages) || 'Languages';
+            let html = `<section class="cv-section"><h2 class="cv-section-title">${toTitleCase(title)}</h2>`;
+            html += '<div class="cv-languages">';
+            
+            visible.forEach(lang => {
+                html += '<div class="cv-language-item">';
+                html += `<span class="cv-language-name">${escapeHtml(lang.title)}</span>`;
+                if (lang.level) {
+                    html += ` <span class="cv-language-level">(${escapeHtml(lang.level)})</span>`;
+                }
+                html += '</div>';
+            });
+            
+            html += '</div></section>';
+            return html;
+        }
+        
+        // Utility functions
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function toTitleCase(str) {
+            if (!str) return '';
+            const minorWords = ['and', 'of', 'the', 'in', 'on', 'at', 'to', 'for', 'by', 'with', 'a', 'an'];
+            return str.toLowerCase().replace(/\w\S*/g, (txt, offset) => {
+                if (offset && minorWords.includes(txt)) return txt;
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        }
+        
+        function formatDateRange(start, end) {
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '';
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return dateStr;
+                return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            };
+            
+            const startFormatted = formatDate(start);
+            const endFormatted = end ? formatDate(end) : 'Present';
+            
+            if (!startFormatted && !endFormatted) return '';
+            if (!startFormatted) return endFormatted;
+            return `${startFormatted} - ${endFormatted}`;
+        }
+        
+        // Request initial data from parent
+        window.parent.postMessage({ type: 'CV_READY' }, '*');
+    </script>
+</body>
+</html>
