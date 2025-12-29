@@ -7,12 +7,13 @@ import { useEffect, useRef, useState } from "react";
 import { cvListAction, cvDeleteAction } from "@/actions/cvs";
 import { showErrorAlert, showSuccessAlert } from "@/lib/alerts";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import ResumeContainer, { ListContainer, ResumePreview } from "@/components/cv-builder/reviewer/resume-preview";
 import { ControlPanelView } from "@/components/cv-builder/control-components/utils/enums";
 import { FaFileAlt, FaTrash } from "react-icons/fa";
 
 export const ResumeList = ({ ...props }) => {
+    const router = useRouter();
     const { user, resumeList, setResumeList, setResumeData, defaultCv, emptyCv, setControlPanelIndex } = useAppContext();
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -70,19 +71,19 @@ export const ResumeList = ({ ...props }) => {
     const onClickNewCv = () => {
         const uniqueTitle = generateUniqueCvTitle('My Resume');
         setResumeData({ ...emptyCv, title: uniqueTitle });
-        redirect('/dashboard/cvnew')
+        router.push('/dashboard/cvnew');
     }
 
     // Create CV from template
     const onClickTemplateCv = () => {
         const uniqueTitle = generateUniqueCvTitle('Template Resume');
         setResumeData({ ...defaultCv, title: uniqueTitle });
-        redirect('/dashboard/cvnew')
+        router.push('/dashboard/cvnew');
     }
 
     const onClickEditCv = (cv) => {
         setResumeData(cv);
-        redirect(`/dashboard/${cv.id}`)
+        router.push(`/dashboard/${cv.id}`);
     }
 
     // Delete CV
