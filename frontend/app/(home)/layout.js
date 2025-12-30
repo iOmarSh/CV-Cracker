@@ -2,6 +2,7 @@ import "../globals.css";
 import { geistMono, geistSans } from "@/app/fonts";
 import PremiumNavbar from "@/components/layout/premium-navbar";
 import AppProvider from "@/context/app-provider";
+import FeedbackButton from "@/components/feedback/feedback-button";
 
 export const metadata = {
     title: "cv.craft — Build ATS-Ready CVs",
@@ -19,6 +20,7 @@ export default function HomeLayout({ children }) {
                     <AppProvider>
                         <PremiumNavbar />
                         {children}
+                        <FeedbackButton />
                     </AppProvider>
                 </div>
             </body>

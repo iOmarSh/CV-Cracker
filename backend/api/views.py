@@ -4,11 +4,11 @@ from django.utils import timezone
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import CV
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from .models import CV, Feedback
 from .pagination import CVPagination
 from .serializers import CVSerializer
 from auth_app.models import User
@@ -214,7 +214,18 @@ class AdminStatsView(APIView):
                 'grad_years': [{'year': k, 'count': v} for k, v in sorted(grad_years.items())],
                 'top_jobs': [{'title': k, 'count': v} for k, v in sorted_jobs],
                 'top_locations': [{'name': k, 'count': v} for k, v in sorted_locations]
-            }
+            },
+            'feedback': [
+                {
+                    'id': f.id,
+                    'type': f.feedback_type,
+                    'message': f.message,
+                    'email': f.email or (f.user.email if f.user else 'Anonymous'),
+                    'created_at': f.created_at.isoformat(),
+                    'is_read': f.is_read
+                }
+                for f in Feedback.objects.all()[:10]
+            ]
         })
 
     def _get_fun_message(self, users, cvs):
@@ -251,3 +262,50 @@ class MakeMeAdminView(APIView):
             return Response({'success': True, 'message': f'User {email} is now an ADMIN! 👑 Please log out and log in again.'})
         except User.DoesNotExist:
             return Response({'error': f'User with email {email} was NOT found in this database. Are you registered?'}, status=404)
+
+
+class FeedbackCreateView(APIView):
+    """API endpoint to submit feedback (authenticated or anonymous)"""
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        feedback_type = request.data.get('feedback_type', 'other')
+        message = request.data.get('message', '').strip()
+        email = request.data.get('email', '').strip()
+        
+        if not message:
+            return Response({'error': 'Message is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Create feedback
+        feedback = Feedback.objects.create(
+            user=request.user if request.user.is_authenticated else None,
+            email=email or (request.user.email if request.user.is_authenticated else ''),
+            feedback_type=feedback_type,
+            message=message
+        )
+        
+        return Response({
+            'success': True,
+            'message': 'Thank you for your feedback!'
+        }, status=status.HTTP_201_CREATED)
+
+
+class FeedbackListView(APIView):
+    """Admin-only endpoint to view all feedback"""
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    
+    def get(self, request):
+        feedbacks = Feedback.objects.all()[:20]  # Latest 20
+        return Response({
+            'feedback': [
+                {
+                    'id': f.id,
+                    'type': f.feedback_type,
+                    'message': f.message,
+                    'email': f.email or (f.user.email if f.user else 'Anonymous'),
+                    'created_at': f.created_at.isoformat(),
+                    'is_read': f.is_read
+                }
+                for f in feedbacks
+            ]
+        })

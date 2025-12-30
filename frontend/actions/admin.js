@@ -36,3 +36,30 @@ export async function getAdminStats() {
         };
     }
 }
+
+export async function getAdminFeedback() {
+    try {
+        const cookies = await getAccessToken();
+        if (!cookies) {
+            return { success: false, message: "Not authenticated" };
+        }
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${cookies.value}`
+        };
+
+        const response = await axios.get(`${BACKEND_BASE_URL}/api/admin/feedback/`, { headers });
+
+        return {
+            success: true,
+            data: response.data.feedback
+        };
+    } catch (error) {
+        console.error('Error fetching admin feedback:', error);
+        return {
+            success: false,
+            message: "Failed to fetch feedback"
+        };
+    }
+}

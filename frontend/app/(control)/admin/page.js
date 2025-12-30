@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useAppContext from '@/hooks/useAppContext';
 import { getAdminStats } from '@/actions/admin';
-import { FaUsers, FaFileAlt, FaChartLine, FaCrown, FaRocket, FaLock, FaUniversity, FaBriefcase, FaMapMarkerAlt, FaGraduationCap, FaBuilding } from 'react-icons/fa';
+import { FaUsers, FaFileAlt, FaChartLine, FaCrown, FaRocket, FaLock, FaUniversity, FaBriefcase, FaMapMarkerAlt, FaGraduationCap, FaBuilding, FaComment } from 'react-icons/fa';
 import MatrixBackground from '@/components/effects/matrix-background';
 import { getEmailAndName } from '@/lib/utils';
 
@@ -324,6 +324,38 @@ export default function AdminPage() {
                                 color="text-green-400"
                                 subtext="Graduation Year Distribution"
                             />
+                        </div>
+                    </div>
+                )}
+
+                {/* User Feedback Section */}
+                {stats?.feedback && stats.feedback.length > 0 && (
+                    <div className="mb-12">
+                        <h2 className="text-2xl font-bold text-[#E6E9EB] mb-6 flex items-center gap-2">
+                            <FaComment className="text-[#2EFF8A]" />
+                            User Feedback
+                        </h2>
+                        <div className="grid gap-4">
+                            {stats.feedback.map((item, index) => (
+                                <div key={index} className="bg-[#111316] border border-[#2a2d32] rounded-xl p-4 hover:border-[#2EFF8A]/30 transition-all">
+                                    <div className="flex items-start justify-between mb-2">
+                                        <div className="flex items-center gap-2">
+                                            <span className={`px-2 py-1 rounded-lg text-xs font-medium ${item.type === 'bug' ? 'bg-red-500/20 text-red-400' :
+                                                item.type === 'suggestion' ? 'bg-yellow-500/20 text-yellow-400' :
+                                                    item.type === 'praise' ? 'bg-pink-500/20 text-pink-400' :
+                                                        'bg-blue-500/20 text-blue-400'
+                                                }`}>
+                                                {item.type}
+                                            </span>
+                                            <span className="text-[#9AA3A8] text-sm">{item.email}</span>
+                                        </div>
+                                        <span className="text-[#6b7280] text-xs">
+                                            {new Date(item.created_at).toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                    <p className="text-[#E6E9EB] text-sm">{item.message}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 )}
