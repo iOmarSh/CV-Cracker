@@ -8,7 +8,7 @@ export async function login(formData) {
         const response = await ThirdParty.Login(formData);
         if (response.access && response.refresh) {
 
-            const { username, email } = await decodeAndSetCookies(response.access, response.refresh);
+            const { username, email, is_staff } = await decodeAndSetCookies(response.access, response.refresh);
 
             return {
                 success: true,
@@ -16,6 +16,7 @@ export async function login(formData) {
                 tokens: { accessToken: response.access, refreshToken: response.refresh },
                 statusCode: 200,
                 username: username,
+                isAdmin: is_staff
             };
         }
     } catch (error) {

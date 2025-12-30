@@ -38,6 +38,7 @@ export default function LoginModal({ onChangeModal, closeModal }) {
             login({
                 email: formData.email,
                 username: message.username,
+                isAdmin: message.isAdmin
             })
             closeModal()
 
