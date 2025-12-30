@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useAppContext from '@/hooks/useAppContext';
 import { getAdminStats } from '@/actions/admin';
-import { FaUsers, FaFileAlt, FaChartLine, FaCrown, FaRocket, FaLock } from 'react-icons/fa';
+import { FaUsers, FaFileAlt, FaChartLine, FaCrown, FaRocket, FaLock, FaUniversity, FaBriefcase, FaMapMarkerAlt, FaGraduationCap, FaBuilding } from 'react-icons/fa';
 import MatrixBackground from '@/components/effects/matrix-background';
 
 // Stat Card Component
@@ -97,9 +97,53 @@ function ActivityChart({ data }) {
     );
 }
 
-import { getEmailAndName } from '@/lib/utils';
+// Insight Bar Chart Component
+function InsightBarChart({ title, data, icon: Icon, color, subtext }) {
+    if (!data || data.length === 0) return null;
+    const maxVal = Math.max(...data.map(d => d.count));
 
-// ...
+    return (
+        <div className="bg-[#111316] border border-[#2a2d32] rounded-2xl p-6 hover:border-[#2EFF8A]/30 transition-all">
+            <h3 className="text-lg font-bold text-[#E6E9EB] mb-4 flex items-center gap-2">
+                <Icon className={color} />
+                {title}
+            </h3>
+            {subtext && <p className="text-[#9AA3A8] text-xs mb-4">{subtext}</p>}
+
+            <div className="space-y-3">
+                {data.map((item, index) => (
+                    <div key={index} className="group">
+                        <div className="flex justify-between text-xs mb-1">
+                            <span className="text-[#E6E9EB] font-medium truncate max-w-[70%]">{item.name || item.title || item.year}</span>
+                            <span className="text-[#9AA3A8]">{item.count}</span>
+                        </div>
+                        <div className="h-2 bg-[#0f1113] rounded-full overflow-hidden">
+                            <div
+                                className={`h-full rounded-full transition-all duration-1000 ${color.replace('text-', 'bg-')}`}
+                                style={{ width: `${(item.count / maxVal) * 100}%` }}
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+// Simple Stat Pill
+function StatPill({ label, value, icon: Icon }) {
+    return (
+        <div className="flex items-center gap-3 bg-[#111316] border border-[#2a2d32] px-4 py-3 rounded-xl">
+            <div className="p-2 bg-[#2EFF8A]/10 rounded-lg text-[#2EFF8A]">
+                <Icon />
+            </div>
+            <div>
+                <p className="text-[#9AA3A8] text-xs">{label}</p>
+                <p className="text-[#E6E9EB] font-bold">{value}</p>
+            </div>
+        </div>
+    );
+}
 
 export default function AdminPage() {
     const router = useRouter();
@@ -227,37 +271,117 @@ export default function AdminPage() {
                     <Leaderboard users={stats?.top_users || []} />
                 </div>
 
-                {/* Potential Insights Section (Coming Soon) */}
-                <div className="mb-12">
-                    <h3 className="text-xl font-bold text-[#E6E9EB] mb-6 flex items-center gap-2">
-                        <FaRocket className="text-purple-500" />
-                        Future Insights (Coming Soon)
+// Insight Bar Chart Component
+                function InsightBarChart({title, data, icon: Icon, color, subtext }) {
+    if (!data || data.length === 0) return null;
+    const maxVal = Math.max(...data.map(d => d.count));
+
+                return (
+                <div className="bg-[#111316] border border-[#2a2d32] rounded-2xl p-6 hover:border-[#2EFF8A]/30 transition-all">
+                    <h3 className="text-lg font-bold text-[#E6E9EB] mb-4 flex items-center gap-2">
+                        <Icon className={color} />
+                        {title}
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* Insight Card 1 */}
-                        <div className="bg-[#111316] border border-[#2a2d32] border-dashed rounded-2xl p-6 opacity-70 hover:opacity-100 transition-opacity">
-                            <h4 className="text-[#2EFF8A] font-bold mb-2">🔥 Top Skills</h4>
-                            <p className="text-[#9AA3A8] text-sm">See which skills are most popular among your users. (e.g., Python, React, AWS)</p>
-                        </div>
-                        {/* Insight Card 2 */}
-                        <div className="bg-[#111316] border border-[#2a2d32] border-dashed rounded-2xl p-6 opacity-70 hover:opacity-100 transition-opacity">
-                            <h4 className="text-[#2EFF8A] font-bold mb-2">💼 Job Market</h4>
-                            <p className="text-[#9AA3A8] text-sm">Analyze the most common job roles users are applying for.</p>
-                        </div>
-                        {/* Insight Card 3 */}
-                        <div className="bg-[#111316] border border-[#2a2d32] border-dashed rounded-2xl p-6 opacity-70 hover:opacity-100 transition-opacity">
-                            <h4 className="text-[#2EFF8A] font-bold mb-2">🌍 User Map</h4>
-                            <p className="text-[#9AA3A8] text-sm">Visual heatmap of where your users are located.</p>
-                        </div>
+                    {subtext && <p className="text-[#9AA3A8] text-xs mb-4">{subtext}</p>}
+
+                    <div className="space-y-3">
+                        {data.map((item, index) => (
+                            <div key={index} className="group">
+                                <div className="flex justify-between text-xs mb-1">
+                                    <span className="text-[#E6E9EB] font-medium truncate max-w-[70%]">{item.name || item.title || item.year}</span>
+                                    <span className="text-[#9AA3A8]">{item.count}</span>
+                                </div>
+                                <div className="h-2 bg-[#0f1113] rounded-full overflow-hidden">
+                                    <div
+                                        className={`h-full rounded-full transition-all duration-1000 ${color.replace('text-', 'bg-')}`}
+                                        style={{ width: `${(item.count / maxVal) * 100}%` }}
+                                    />
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
+                );
+}
 
-                {/* Fun Footer */}
-                <div className="text-center text-[#9AA3A8] text-sm mt-12 mb-8">
-                    <p>🤖 ATS bots destroyed today: <span className="text-[#2EFF8A] font-bold">∞</span></p>
-                    <p className="mt-2 text-xs opacity-50">* "Total CVs" now excludes unmodified templates. Only real hustlers counted.</p>
+                // Simple Stat Pill
+                function StatPill({label, value, icon: Icon }) {
+    return (
+                <div className="flex items-center gap-3 bg-[#111316] border border-[#2a2d32] px-4 py-3 rounded-xl">
+                    <div className="p-2 bg-[#2EFF8A]/10 rounded-lg text-[#2EFF8A]">
+                        <Icon />
+                    </div>
+                    <div>
+                        <p className="text-[#9AA3A8] text-xs">{label}</p>
+                        <p className="text-[#E6E9EB] font-bold">{value}</p>
+                    </div>
+                </div>
+                );
+}
+
+                {/* Advanced Insights Grid */}
+                {stats?.insights && (
+                    <div className="mb-12">
+                        <h2 className="text-2xl font-bold text-[#E6E9EB] mb-6 flex items-center gap-2">
+                            📊 Deep Dive Analytics
+                        </h2>
+
+                        {/* Highlights Row */}
+                        <div className="flex flex-wrap gap-4 mb-8">
+                            <StatPill
+                                icon={FaGraduationCap}
+                                label="Average GPA"
+                                value={stats.insights.average_gpa ? `${stats.insights.average_gpa} / 4.0` : "N/A"}
+                            />
+                            <StatPill
+                                icon={FaBuilding}
+                                label="Top Job Role"
+                                value={stats.insights.top_jobs?.[0]?.title || "N/A"}
+                            />
+                            <StatPill
+                                icon={FaMapMarkerAlt}
+                                label="Top Location"
+                                value={stats.insights.top_locations?.[0]?.name || "Earth"}
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <InsightBarChart
+                                title="Top Universities"
+                                data={stats.insights.top_universities}
+                                icon={FaUniversity}
+                                color="text-blue-400"
+                            />
+                            <InsightBarChart
+                                title="Popular Job Titles"
+                                data={stats.insights.top_jobs}
+                                icon={FaBriefcase}
+                                color="text-purple-400"
+                            />
+                            <InsightBarChart
+                                title="User Locations"
+                                data={stats.insights.top_locations}
+                                icon={FaMapMarkerAlt}
+                                color="text-orange-400"
+                            />
+                            <InsightBarChart
+                                title="Graduation Years"
+                                data={stats.insights.grad_years}
+                                icon={FaGraduationCap}
+                                color="text-green-400"
+                                subtext="When did your users graduate?"
+                            />
+                        </div>
+                    </div>
+                )}
+
+
+                {/* Fun Footer - Refined */}
+                <div className="text-center text-[#9AA3A8]/60 text-xs mt-20 mb-8 border-t border-[#2a2d32] pt-8">
+                    <p>Cv.Craft Admin Console v2.0 • Secure Connection • 🔐 Authorized Personnel Only</p>
                 </div>
             </div>
         </div>
     );
 }
+```

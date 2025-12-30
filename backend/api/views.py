@@ -111,10 +111,94 @@ class AdminStatsView(APIView):
         # Fun stats
         avg_cvs_per_user = real_cvs_count / total_users if total_users > 0 else 0
 
+        # Advanced Insights Containers
+        universities = {}
+        gpas = []
+        grad_years = {}
+        job_titles = {}
+        locations = {}
+
+        # Parse CVs for Insights
+        for cv in all_cvs:
+            try:
+                cv_data = cv.data
+                if isinstance(cv_data, str):
+                    cv_data = json.loads(cv_data)
+                
+                # --- Education Insights ---
+                if 'educations' in cv_data and isinstance(cv_data['educations'], list):
+                    for edu in cv_data['educations']:
+                        # University Name
+                        school = edu.get('school')
+                        if school:
+                            school = school.strip()
+                            universities[school] = universities.get(school, 0) + 1
+                        
+                        # GPA
+                        gpa = edu.get('gpa')
+                        if gpa:
+                            try:
+                                # Simple extraction of numeric part if possible
+                                gpa_str = str(gpa).replace('/4.0', '').replace('/5.0', '').strip()
+                                gpa_val = float(gpa_str)
+                                if 0 < gpa_val <= 5.0: # Filter outliers
+                                    gpas.append(gpa_val)
+                            except:
+                                pass # Ignore parse errors
+                        
+                        # Graduation Year
+                        date = edu.get('date') # Format usually "Jan 2020 - May 2024" or "2024"
+                        if date:
+                            # Extract the last 4 digits as year
+                            import re
+                            years = re.findall(r'\b20\d{2}\b', date)
+                            if years:
+                                grad_year = years[-1] # Assume last year is grad year
+                                grad_years[grad_year] = grad_years.get(grad_year, 0) + 1
+
+                # --- Job Title Insights ---
+                if 'workExperience' in cv_data and isinstance(cv_data['workExperience'], list):
+                    for job in cv_data['workExperience']:
+                        title = job.get('company') # Often users put title in company or vice versa, but let's check field names
+                        # Standard field might be 'jobTitle' or 'position' depending on template
+                        # Let's check both possibilities if they exist in schema
+                        role = job.get('jobTitle') or job.get('position') or job.get('title')
+                        if role:
+                            role = role.strip().title() # Normalize case
+                            job_titles[role] = job_titles.get(role, 0) + 1
+
+                # --- Location Insights ---
+                loc = cv_data.get('address')
+                if loc:
+                    # Try to extract City/Country if formatted as "City, Country"
+                    parts = [p.strip() for p in loc.split(',')]
+                    if len(parts) > 0:
+                        # Use the last part as broad location (Country or State)
+                        region = parts[-1]
+                        locations[region] = locations.get(region, 0) + 1
+
+            except Exception as e:
+                # print(f"Error parsing CV {cv.id} for insights: {e}") 
+                continue
+
+        # Sort and Format Insights for Frontend
+        
+        # Top 5 Unis
+        sorted_unis = sorted(universities.items(), key=lambda x: x[1], reverse=True)[:5]
+        
+        # Avg GPA
+        avg_gpa = round(sum(gpas) / len(gpas), 2) if gpas else 0
+        
+        # Top 5 Jobs
+        sorted_jobs = sorted(job_titles.items(), key=lambda x: x[1], reverse=True)[:5]
+        
+        # Top 5 Locations
+        sorted_locations = sorted(locations.items(), key=lambda x: x[1], reverse=True)[:5]
+
         return Response({
             'total_users': total_users,
-            'total_cvs': real_cvs_count,  # Sending the "Real" count for display
-            'total_raw_cvs': total_raw_cvs, # Optional: send raw count if needed
+            'total_cvs': real_cvs_count,
+            'total_raw_cvs': total_raw_cvs,
             'new_users_7_days': new_users_7_days,
             'new_cvs_7_days': new_cvs_7_days,
             'avg_cvs_per_user': round(avg_cvs_per_user, 2),
@@ -123,7 +207,14 @@ class AdminStatsView(APIView):
                 {'email': u.email[:20] + '...' if len(u.email) > 20 else u.email, 'cv_count': u.cv_count}
                 for u in top_users
             ],
-            'fun_message': self._get_fun_message(total_users, real_cvs_count)
+            'fun_message': self._get_fun_message(total_users, real_cvs_count),
+            'insights': {
+                'top_universities': [{'name': k, 'count': v} for k, v in sorted_unis],
+                'average_gpa': avg_gpa,
+                'grad_years': [{'year': k, 'count': v} for k, v in sorted(grad_years.items())],
+                'top_jobs': [{'title': k, 'count': v} for k, v in sorted_jobs],
+                'top_locations': [{'name': k, 'count': v} for k, v in sorted_locations]
+            }
         })
 
     def _get_fun_message(self, users, cvs):
