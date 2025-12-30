@@ -63,3 +63,30 @@ export async function getAdminFeedback() {
         };
     }
 }
+
+export async function deleteFeedback(feedbackId) {
+    try {
+        const cookies = await getAccessToken();
+        if (!cookies) {
+            return { success: false, message: "Not authenticated" };
+        }
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${cookies.value}`
+        };
+
+        const response = await axios.delete(`${BACKEND_BASE_URL}/api/admin/feedback/?id=${feedbackId}`, { headers });
+
+        return {
+            success: true,
+            message: response.data.message || 'Feedback deleted'
+        };
+    } catch (error) {
+        console.error('Error deleting feedback:', error);
+        return {
+            success: false,
+            message: "Failed to delete feedback"
+        };
+    }
+}

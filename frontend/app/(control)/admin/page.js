@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useAppContext from '@/hooks/useAppContext';
-import { getAdminStats } from '@/actions/admin';
-import { FaUsers, FaFileAlt, FaChartLine, FaCrown, FaRocket, FaLock, FaUniversity, FaBriefcase, FaMapMarkerAlt, FaGraduationCap, FaBuilding, FaComment } from 'react-icons/fa';
+import { getAdminStats, deleteFeedback } from '@/actions/admin';
+import { FaUsers, FaFileAlt, FaChartLine, FaCrown, FaRocket, FaLock, FaUniversity, FaBriefcase, FaMapMarkerAlt, FaGraduationCap, FaBuilding, FaComment, FaTrash } from 'react-icons/fa';
 import MatrixBackground from '@/components/effects/matrix-background';
 import { getEmailAndName } from '@/lib/utils';
 
@@ -334,26 +334,47 @@ export default function AdminPage() {
                         <h2 className="text-2xl font-bold text-[#E6E9EB] mb-6 flex items-center gap-2">
                             <FaComment className="text-[#2EFF8A]" />
                             User Feedback
+                            <span className="text-sm font-normal text-[#9AA3A8] ml-2">({stats.feedback.length} messages)</span>
                         </h2>
                         <div className="grid gap-4">
-                            {stats.feedback.map((item, index) => (
-                                <div key={index} className="bg-[#111316] border border-[#2a2d32] rounded-xl p-4 hover:border-[#2EFF8A]/30 transition-all">
-                                    <div className="flex items-start justify-between mb-2">
-                                        <div className="flex items-center gap-2">
-                                            <span className={`px-2 py-1 rounded-lg text-xs font-medium ${item.type === 'bug' ? 'bg-red-500/20 text-red-400' :
-                                                item.type === 'suggestion' ? 'bg-yellow-500/20 text-yellow-400' :
-                                                    item.type === 'praise' ? 'bg-pink-500/20 text-pink-400' :
-                                                        'bg-blue-500/20 text-blue-400'
+                            {stats.feedback.map((item) => (
+                                <div key={item.id} className="bg-[#111316] border border-[#2a2d32] rounded-xl p-5 hover:border-[#2EFF8A]/30 transition-all group">
+                                    <div className="flex items-start justify-between mb-3">
+                                        <div className="flex items-center gap-3">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${item.type === 'bug' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
+                                                    item.type === 'suggestion' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+                                                        item.type === 'praise' ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30' :
+                                                            'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                                                 }`}>
                                                 {item.type}
                                             </span>
-                                            <span className="text-[#9AA3A8] text-sm">{item.email}</span>
+                                            <span className="text-[#E6E9EB] font-medium">{item.email}</span>
                                         </div>
-                                        <span className="text-[#6b7280] text-xs">
-                                            {new Date(item.created_at).toLocaleDateString()}
-                                        </span>
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-[#6b7280] text-xs">
+                                                {new Date(item.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                            </span>
+                                            <button
+                                                onClick={async () => {
+                                                    if (confirm('Delete this feedback?')) {
+                                                        const result = await deleteFeedback(item.id);
+                                                        if (result.success) {
+                                                            // Remove from local state
+                                                            setStats(prev => ({
+                                                                ...prev,
+                                                                feedback: prev.feedback.filter(f => f.id !== item.id)
+                                                            }));
+                                                        }
+                                                    }
+                                                }}
+                                                className="p-2 text-[#6b7280] hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all opacity-0 group-hover:opacity-100"
+                                                title="Delete feedback"
+                                            >
+                                                <FaTrash className="text-sm" />
+                                            </button>
+                                        </div>
                                     </div>
-                                    <p className="text-[#E6E9EB] text-sm">{item.message}</p>
+                                    <p className="text-[#9AA3A8] text-sm leading-relaxed pl-1 border-l-2 border-[#2a2d32] ml-1">{item.message}</p>
                                 </div>
                             ))}
                         </div>

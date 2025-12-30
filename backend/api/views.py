@@ -291,7 +291,7 @@ class FeedbackCreateView(APIView):
 
 
 class FeedbackListView(APIView):
-    """Admin-only endpoint to view all feedback"""
+    """Admin-only endpoint to view and delete feedback"""
     permission_classes = [IsAuthenticated, IsAdminUser]
     
     def get(self, request):
@@ -309,3 +309,16 @@ class FeedbackListView(APIView):
                 for f in feedbacks
             ]
         })
+    
+    def delete(self, request):
+        """Delete a feedback by ID"""
+        feedback_id = request.query_params.get('id')
+        if not feedback_id:
+            return Response({'error': 'Feedback ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            feedback = Feedback.objects.get(id=feedback_id)
+            feedback.delete()
+            return Response({'success': True, 'message': 'Feedback deleted'})
+        except Feedback.DoesNotExist:
+            return Response({'error': 'Feedback not found'}, status=status.HTTP_404_NOT_FOUND)
