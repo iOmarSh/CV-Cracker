@@ -101,3 +101,26 @@ class AdminStatsView(APIView):
         ]
         import random
         return random.choice(messages)
+
+
+class MakeMeAdminView(APIView):
+    """Temporary view to promote user to admin (fixes DB mismatch issues)"""
+    permission_classes = [] # Allow anyone with the secret
+
+    def get(self, request):
+        secret = request.query_params.get('secret')
+        email = request.query_params.get('email')
+
+        if secret != 'simi_magic_key_12345':
+            return Response({'error': 'Invalid secret provided. Access denied.'}, status=403)
+        
+        if not email:
+            return Response({'error': 'Email parameter is required.'}, status=400)
+            
+        try:
+            user = User.objects.get(email=email)
+            user.is_staff = True
+            user.save()
+            return Response({'success': True, 'message': f'User {email} is now an ADMIN! 👑 Please log out and log in again.'})
+        except User.DoesNotExist:
+            return Response({'error': f'User with email {email} was NOT found in this database. Are you registered?'}, status=404)
