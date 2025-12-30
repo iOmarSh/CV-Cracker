@@ -3,7 +3,7 @@ import { useState } from "react";
 
 
 export default function ImageViewer() {
-    const numberOfImages = 8;
+    const numberOfImages = 5;
 
     // Dynamically generate the image data for the gallery
     const data = Array.from({ length: numberOfImages }, (_, index) => ({
@@ -28,15 +28,19 @@ export default function ImageViewer() {
 
     return (
         <div>
-            {/* Grid for images */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-1">
+            <h3 className="text-2xl font-extrabold mb-6 text-[#2EFF8A] text-center">Screenshots</h3>
+            {/* Grid for images with proper spacing */}
+            <div className="flex flex-col gap-8">
                 {data.map(({ imageLink }, index) => (
-                    <div key={index} className="overflow-hidden rounded-lg">
+                    <div
+                        key={index}
+                        className="rounded-xl overflow-hidden border-2 border-[#2EFF8A]/30 hover:border-[#2EFF8A] transition-colors shadow-lg"
+                    >
                         <img
-                            className="w-full h-[500px] object-cover rounded-lg cursor-pointer"
+                            className="w-full h-auto object-contain cursor-pointer hover:opacity-90 transition-opacity"
                             src={imageLink}
                             alt={`gallery-photo-${index + 1}`}
-                            onClick={() => openModal(imageLink)} // Open modal on image click
+                            onClick={() => openModal(imageLink)}
                         />
                     </div>
                 ))}
@@ -45,21 +49,21 @@ export default function ImageViewer() {
             {/* Modal for full image view */}
             {isModalOpen && (
                 <div
-                    className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50"
-                    onClick={closeModal} // Close modal when clicking outside of the image
+                    className="fixed inset-0 flex justify-center items-center bg-black/80 backdrop-blur-sm z-50"
+                    onClick={closeModal}
                 >
-                    <div className="relative">
+                    <div className="relative max-w-[90vw] max-h-[90vh]">
                         <img
-                            className="max-w-full max-h-screen object-contain rounded-lg"
+                            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
                             src={selectedImage}
                             alt="Full view"
                         />
                         {/* Close button */}
                         <button
-                            className="absolute top-2 right-2 text-white font-bold text-xl"
+                            className="absolute -top-4 -right-4 w-10 h-10 bg-[#2EFF8A] text-[#0f1113] font-bold text-xl rounded-full flex items-center justify-center hover:bg-[#26d975] transition-colors shadow-lg"
                             onClick={closeModal}
                         >
-                            X
+                            ×
                         </button>
                     </div>
                 </div>
