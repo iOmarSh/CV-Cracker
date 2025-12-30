@@ -6,6 +6,7 @@ import useAppContext from '@/hooks/useAppContext';
 import { getAdminStats } from '@/actions/admin';
 import { FaUsers, FaFileAlt, FaChartLine, FaCrown, FaRocket, FaLock, FaUniversity, FaBriefcase, FaMapMarkerAlt, FaGraduationCap, FaBuilding } from 'react-icons/fa';
 import MatrixBackground from '@/components/effects/matrix-background';
+import { getEmailAndName } from '@/lib/utils';
 
 // Stat Card Component
 function StatCard({ icon: Icon, label, value, color, subtext }) {
@@ -30,7 +31,7 @@ function StatCard({ icon: Icon, label, value, color, subtext }) {
 
 // Top Users Leaderboard
 function Leaderboard({ users }) {
-    const medals = ['🥇', '🥈', '🥉'];
+    const medals = ['1st', '2nd', '3rd'];
 
     return (
         <div className="bg-[#111316] border border-[#2a2d32] rounded-2xl p-6">
@@ -42,20 +43,20 @@ function Leaderboard({ users }) {
                 {users?.length > 0 ? users.map((user, index) => (
                     <div key={index} className="flex items-center justify-between p-3 bg-[#0f1113] rounded-xl hover:bg-[#1a1d21] transition-colors">
                         <div className="flex items-center gap-3">
-                            <span className="text-2xl">{medals[index] || `#${index + 1}`}</span>
+                            <span className="text-xl font-mono text-[#2EFF8A]">{medals[index] || `#${index + 1}`}</span>
                             <span className="text-[#9AA3A8] font-mono text-sm">{user.email}</span>
                         </div>
-                        <span className="text-[#2EFF8A] font-bold">{user.cv_count} CVs</span>
+                        <span className="text-[#E6E9EB] font-bold">{user.cv_count} CVs</span>
                     </div>
                 )) : (
-                    <p className="text-[#9AA3A8] text-center py-4">No users yet! 🦗</p>
+                    <p className="text-[#9AA3A8] text-center py-4">No users found.</p>
                 )}
             </div>
         </div>
     );
 }
 
-// Fun Messages Component
+// Fun Messages Component (Now cleaner)
 function FunMessage({ message }) {
     return (
         <div className="bg-gradient-to-r from-[#2EFF8A]/10 to-[#2EFF8A]/5 border border-[#2EFF8A]/30 rounded-2xl p-6 text-center">
@@ -64,7 +65,7 @@ function FunMessage({ message }) {
     );
 }
 
-// Activity Chart (Simple ASCII-style bar chart)
+// Activity Chart
 function ActivityChart({ data }) {
     const maxCount = data?.length > 0 ? Math.max(...data.map(d => d.count)) : 0;
 
@@ -90,7 +91,7 @@ function ActivityChart({ data }) {
                         </div>
                     </div>
                 )) : (
-                    <p className="text-[#9AA3A8] text-center py-4">No data yet! Build it and they will come... 🏗️</p>
+                    <p className="text-[#9AA3A8] text-center py-4">No activity data available.</p>
                 )}
             </div>
         </div>
@@ -164,7 +165,7 @@ export default function AdminPage() {
             }
 
             if (!isCookieAdmin) {
-                setError("Nice try! 😏 But you're not an admin.");
+                setError("Access Denied: Admin privileges required.");
                 setLoading(false);
                 return;
             }
@@ -186,7 +187,7 @@ export default function AdminPage() {
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-[#2EFF8A] mx-auto mb-4" />
-                    <p className="text-[#9AA3A8]">Loading admin secrets... 🔐</p>
+                    <p className="text-[#9AA3A8]">Authenticating...</p>
                 </div>
             </div>
         );
@@ -203,7 +204,7 @@ export default function AdminPage() {
                         onClick={() => router.push('/dashboard')}
                         className="mt-6 px-6 py-2 bg-[#2EFF8A] text-[#0f1113] font-bold rounded-full hover:bg-[#26d975] transition-colors"
                     >
-                        Back to Dashboard
+                        Return to Dashboard
                     </button>
                 </div>
             </div>
@@ -222,9 +223,9 @@ export default function AdminPage() {
                         <span className="text-[#2EFF8A] font-medium">Admin Control Center</span>
                     </div>
                     <h1 className="text-4xl sm:text-5xl font-bold text-[#E6E9EB] mb-2">
-                        Welcome back, <span className="text-[#2EFF8A]">Boss</span> 👑
+                        System <span className="text-[#2EFF8A]">Overview</span>
                     </h1>
-                    <p className="text-[#9AA3A8]">Here&apos;s what&apos;s happening with cv.craft</p>
+                    <p className="text-[#9AA3A8]">Real-time statistics and user analytics</p>
                 </div>
 
                 {/* Fun Message */}
@@ -271,59 +272,11 @@ export default function AdminPage() {
                     <Leaderboard users={stats?.top_users || []} />
                 </div>
 
-// Insight Bar Chart Component
-                function InsightBarChart({title, data, icon: Icon, color, subtext }) {
-    if (!data || data.length === 0) return null;
-    const maxVal = Math.max(...data.map(d => d.count));
-
-                return (
-                <div className="bg-[#111316] border border-[#2a2d32] rounded-2xl p-6 hover:border-[#2EFF8A]/30 transition-all">
-                    <h3 className="text-lg font-bold text-[#E6E9EB] mb-4 flex items-center gap-2">
-                        <Icon className={color} />
-                        {title}
-                    </h3>
-                    {subtext && <p className="text-[#9AA3A8] text-xs mb-4">{subtext}</p>}
-
-                    <div className="space-y-3">
-                        {data.map((item, index) => (
-                            <div key={index} className="group">
-                                <div className="flex justify-between text-xs mb-1">
-                                    <span className="text-[#E6E9EB] font-medium truncate max-w-[70%]">{item.name || item.title || item.year}</span>
-                                    <span className="text-[#9AA3A8]">{item.count}</span>
-                                </div>
-                                <div className="h-2 bg-[#0f1113] rounded-full overflow-hidden">
-                                    <div
-                                        className={`h-full rounded-full transition-all duration-1000 ${color.replace('text-', 'bg-')}`}
-                                        style={{ width: `${(item.count / maxVal) * 100}%` }}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                );
-}
-
-                // Simple Stat Pill
-                function StatPill({label, value, icon: Icon }) {
-    return (
-                <div className="flex items-center gap-3 bg-[#111316] border border-[#2a2d32] px-4 py-3 rounded-xl">
-                    <div className="p-2 bg-[#2EFF8A]/10 rounded-lg text-[#2EFF8A]">
-                        <Icon />
-                    </div>
-                    <div>
-                        <p className="text-[#9AA3A8] text-xs">{label}</p>
-                        <p className="text-[#E6E9EB] font-bold">{value}</p>
-                    </div>
-                </div>
-                );
-}
-
                 {/* Advanced Insights Grid */}
                 {stats?.insights && (
                     <div className="mb-12">
                         <h2 className="text-2xl font-bold text-[#E6E9EB] mb-6 flex items-center gap-2">
-                            📊 Deep Dive Analytics
+                            Deep Dive Analytics
                         </h2>
 
                         {/* Highlights Row */}
@@ -369,19 +322,17 @@ export default function AdminPage() {
                                 data={stats.insights.grad_years}
                                 icon={FaGraduationCap}
                                 color="text-green-400"
-                                subtext="When did your users graduate?"
+                                subtext="Graduation Year Distribution"
                             />
                         </div>
                     </div>
                 )}
 
-
-                {/* Fun Footer - Refined */}
+                {/* Footer */}
                 <div className="text-center text-[#9AA3A8]/60 text-xs mt-20 mb-8 border-t border-[#2a2d32] pt-8">
-                    <p>Cv.Craft Admin Console v2.0 • Secure Connection • 🔐 Authorized Personnel Only</p>
+                    <p>Cv.Craft Admin Console v2.1 • Secure Connection • Authorized Personnel Only</p>
                 </div>
             </div>
         </div>
     );
 }
-```
