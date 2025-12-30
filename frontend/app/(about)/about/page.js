@@ -1,57 +1,7 @@
 import ImageViewer from "@/components/about/image-viewer";
 import Footer from "@/components/layout/footer";
+import FloatingCode from "@/components/effects/floating-code";
 
-// Floating code snippets background component
-function FloatingCode() {
-    const codeSnippets = [
-        "while(unemployed) { apply(); }",
-        "// TODO: Get hired",
-        "git push --force 💪",
-        "npm install job",
-        "console.log('Please hire me');",
-        "if (cv.ats_score > 90) { celebrate(); }",
-        "try { getJob(); } catch { cry(); }",
-        "rm -rf student_loans",
-        "sudo give-me-job --please",
-        "recruiter.ghost(me); // 404",
-        "experience.required = 10; // for junior role",
-        "cv.optimize();",
-    ];
-
-    return (
-        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-            {codeSnippets.map((snippet, index) => (
-                <div
-                    key={index}
-                    className="absolute text-[#2EFF8A]/10 font-mono text-sm whitespace-nowrap"
-                    style={{
-                        left: `${(index * 17) % 90}%`,
-                        top: `${(index * 23) % 90}%`,
-                        animation: `float${index % 3} ${10 + (index % 5) * 2}s ease-in-out infinite`,
-                        animationDelay: `${index * 0.5}s`,
-                        transform: `rotate(${-15 + (index % 6) * 5}deg)`,
-                    }}
-                >
-                    {snippet}
-                </div>
-            ))}
-            <style jsx>{`
-                @keyframes float0 {
-                    0%, 100% { transform: translateY(0) rotate(-10deg); }
-                    50% { transform: translateY(-30px) rotate(-5deg); }
-                }
-                @keyframes float1 {
-                    0%, 100% { transform: translateX(0) rotate(5deg); }
-                    50% { transform: translateX(20px) rotate(10deg); }
-                }
-                @keyframes float2 {
-                    0%, 100% { transform: translateY(0) translateX(0); }
-                    50% { transform: translateY(-20px) translateX(15px); }
-                }
-            `}</style>
-        </div>
-    );
-}
 
 function Profile() {
     return (
