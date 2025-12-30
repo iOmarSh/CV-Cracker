@@ -132,6 +132,14 @@ export default function PremiumNavbar() {
                         <span className="w-5 h-0.5 bg-[#2EFF8A]" />
                         <span className="w-4 h-0.5 bg-[#2EFF8A]" />
                     </button>
+
+                    {/* DEBUG: Temporary Admin Status Check */}
+                    {isAuthenticated && (
+                        <div className="hidden lg:flex flex-col text-[10px] text-gray-500 absolute bottom-0 right-4">
+                            <span>User: {user?.username}</span>
+                            <span>Admin: {user?.isAdmin ? 'YES' : 'NO'}</span>
+                        </div>
+                    )}
                 </div>
             </header>
 
