@@ -4,6 +4,7 @@ import "./dashboard.css";
 import AppProvider from "@/context/app-provider";
 import PremiumNavbar from "@/components/layout/premium-navbar";
 import { geistMono, geistSans } from "@/app/fonts";
+import FeedbackButton from "@/components/feedback/feedback-button";
 
 export const metadata = {
     title: "cv.craft — Dashboard",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
                     <AppProvider>
                         <PremiumNavbar />
                         {children}
+                        <FeedbackButton />
                     </AppProvider>
                 </div>
             </body>
