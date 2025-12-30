@@ -51,15 +51,50 @@ class AdminStatsView(APIView):
         # Get current date info
         today = timezone.now().date()
         last_7_days = today - timedelta(days=7)
-        last_30_days = today - timedelta(days=30)
+        
+        # Load default CV data for comparison
+        try:
+            with open("default_cvs/cv_1.json", "r") as f:
+                default_cv_data = f.read()
+                # Remove whitespace for comparison if needed, or parse as JSON
+                import json
+                default_cv_json = json.loads(default_cv_data)
+        except Exception as e:
+            print(f"Error loading default CV: {e}")
+            default_cv_json = {}
 
         # Basic counts
         total_users = User.objects.count()
-        total_cvs = CV.objects.count()
+        all_cvs = CV.objects.all()
+        total_raw_cvs = all_cvs.count()
+        
+        # Calculate "Real" CVs (created new OR modified default)
+        real_cvs_count = 0
+        for cv in all_cvs:
+            # If title is NOT "Example", it's definitely a user CV (renamed or new)
+            if cv.title != "Example":
+                real_cvs_count += 1
+                continue
+                
+            # If title IS "Example", check if data is different from default
+            # We compare parsed JSONs to avoid whitespace issues
+            try:
+                # cv.data is already a dict if JSONField is used, or string if TextField
+                # Based on models.py it is JSONField, but let's be safe
+                cv_data = cv.data
+                if isinstance(cv_data, str):
+                    cv_data = json.loads(cv_data)
+                
+                if cv_data != default_cv_json:
+                    real_cvs_count += 1
+            except Exception:
+                # If comparison fails, count it as real to be safe
+                real_cvs_count += 1
         
         # Recent activity
         new_users_7_days = User.objects.filter(date_joined__date__gte=last_7_days).count()
-        new_cvs_7_days = CV.objects.filter(created_at__date__gte=last_7_days).count() if hasattr(CV, 'created_at') else 0
+        # For new CVs, we can just use the raw count for activity trends
+        new_cvs_7_days = CV.objects.filter(created_at__date__gte=last_7_days).count()
         
         # Users by day (last 7 days)
         users_by_day = User.objects.filter(
@@ -74,11 +109,12 @@ class AdminStatsView(APIView):
         ).order_by('-cv_count')[:10]
 
         # Fun stats
-        avg_cvs_per_user = total_cvs / total_users if total_users > 0 else 0
+        avg_cvs_per_user = real_cvs_count / total_users if total_users > 0 else 0
 
         return Response({
             'total_users': total_users,
-            'total_cvs': total_cvs,
+            'total_cvs': real_cvs_count,  # Sending the "Real" count for display
+            'total_raw_cvs': total_raw_cvs, # Optional: send raw count if needed
             'new_users_7_days': new_users_7_days,
             'new_cvs_7_days': new_cvs_7_days,
             'avg_cvs_per_user': round(avg_cvs_per_user, 2),
@@ -87,7 +123,7 @@ class AdminStatsView(APIView):
                 {'email': u.email[:20] + '...' if len(u.email) > 20 else u.email, 'cv_count': u.cv_count}
                 for u in top_users
             ],
-            'fun_message': self._get_fun_message(total_users, total_cvs)
+            'fun_message': self._get_fun_message(total_users, real_cvs_count)
         })
 
     def _get_fun_message(self, users, cvs):

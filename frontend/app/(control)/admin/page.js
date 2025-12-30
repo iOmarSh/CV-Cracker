@@ -227,10 +227,35 @@ export default function AdminPage() {
                     <Leaderboard users={stats?.top_users || []} />
                 </div>
 
+                {/* Potential Insights Section (Coming Soon) */}
+                <div className="mb-12">
+                    <h3 className="text-xl font-bold text-[#E6E9EB] mb-6 flex items-center gap-2">
+                        <FaRocket className="text-purple-500" />
+                        Future Insights (Coming Soon)
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Insight Card 1 */}
+                        <div className="bg-[#111316] border border-[#2a2d32] border-dashed rounded-2xl p-6 opacity-70 hover:opacity-100 transition-opacity">
+                            <h4 className="text-[#2EFF8A] font-bold mb-2">🔥 Top Skills</h4>
+                            <p className="text-[#9AA3A8] text-sm">See which skills are most popular among your users. (e.g., Python, React, AWS)</p>
+                        </div>
+                        {/* Insight Card 2 */}
+                        <div className="bg-[#111316] border border-[#2a2d32] border-dashed rounded-2xl p-6 opacity-70 hover:opacity-100 transition-opacity">
+                            <h4 className="text-[#2EFF8A] font-bold mb-2">💼 Job Market</h4>
+                            <p className="text-[#9AA3A8] text-sm">Analyze the most common job roles users are applying for.</p>
+                        </div>
+                        {/* Insight Card 3 */}
+                        <div className="bg-[#111316] border border-[#2a2d32] border-dashed rounded-2xl p-6 opacity-70 hover:opacity-100 transition-opacity">
+                            <h4 className="text-[#2EFF8A] font-bold mb-2">🌍 User Map</h4>
+                            <p className="text-[#9AA3A8] text-sm">Visual heatmap of where your users are located.</p>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Fun Footer */}
-                <div className="text-center text-[#9AA3A8] text-sm mt-12">
+                <div className="text-center text-[#9AA3A8] text-sm mt-12 mb-8">
                     <p>🤖 ATS bots destroyed today: <span className="text-[#2EFF8A] font-bold">∞</span></p>
-                    <p className="mt-2 text-xs opacity-50">* Stats refresh on page reload. Because we&apos;re too cool for real-time.</p>
+                    <p className="mt-2 text-xs opacity-50">* "Total CVs" now excludes unmodified templates. Only real hustlers counted.</p>
                 </div>
             </div>
         </div>
