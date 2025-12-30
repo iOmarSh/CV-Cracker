@@ -97,6 +97,10 @@ function ActivityChart({ data }) {
     );
 }
 
+import { getEmailAndName } from '@/lib/utils';
+
+// ...
+
 export default function AdminPage() {
     const router = useRouter();
     const { user, isAuthenticated } = useAppContext();
@@ -106,13 +110,16 @@ export default function AdminPage() {
 
     useEffect(() => {
         async function fetchStats() {
+            // Check cookies directly to avoid race condition with AppProvider
+            const { isAuthenticated: hasCookie, isAdmin: isCookieAdmin } = getEmailAndName();
+
             // Check if user is admin
-            if (!isAuthenticated) {
+            if (!hasCookie) {
                 router.push('/');
                 return;
             }
 
-            if (isAuthenticated && !user?.isAdmin) {
+            if (!isCookieAdmin) {
                 setError("Nice try! 😏 But you're not an admin.");
                 setLoading(false);
                 return;
@@ -127,11 +134,8 @@ export default function AdminPage() {
             setLoading(false);
         }
 
-        // Wait for user to be loaded
-        if (isAuthenticated !== undefined) {
-            fetchStats();
-        }
-    }, [isAuthenticated, user, router]);
+        fetchStats();
+    }, [router]);
 
     if (loading) {
         return (
