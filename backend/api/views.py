@@ -1,10 +1,17 @@
 import json
+from datetime import timedelta
+from django.utils import timezone
+from django.db.models import Count
+from django.db.models.functions import TruncDate
 
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .models import CV
 from .pagination import CVPagination
 from .serializers import CVSerializer
+from auth_app.models import User
 
 class CVListView(generics.ListCreateAPIView):
     serializer_class = CVSerializer
@@ -34,3 +41,63 @@ class CVDetailView(generics.RetrieveUpdateDestroyAPIView):
             return CV.objects.all()
         else:
             return CV.objects.filter(user=user)
+
+
+class AdminStatsView(APIView):
+    """Admin-only endpoint to get dashboard statistics"""
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get(self, request):
+        # Get current date info
+        today = timezone.now().date()
+        last_7_days = today - timedelta(days=7)
+        last_30_days = today - timedelta(days=30)
+
+        # Basic counts
+        total_users = User.objects.count()
+        total_cvs = CV.objects.count()
+        
+        # Recent activity
+        new_users_7_days = User.objects.filter(date_joined__date__gte=last_7_days).count()
+        new_cvs_7_days = CV.objects.filter(created_at__date__gte=last_7_days).count() if hasattr(CV, 'created_at') else 0
+        
+        # Users by day (last 7 days)
+        users_by_day = User.objects.filter(
+            date_joined__date__gte=last_7_days
+        ).annotate(
+            date=TruncDate('date_joined')
+        ).values('date').annotate(count=Count('id')).order_by('date')
+
+        # CVs per user (top 10 most active)
+        top_users = User.objects.annotate(
+            cv_count=Count('cv')
+        ).order_by('-cv_count')[:10]
+
+        # Fun stats
+        avg_cvs_per_user = total_cvs / total_users if total_users > 0 else 0
+
+        return Response({
+            'total_users': total_users,
+            'total_cvs': total_cvs,
+            'new_users_7_days': new_users_7_days,
+            'new_cvs_7_days': new_cvs_7_days,
+            'avg_cvs_per_user': round(avg_cvs_per_user, 2),
+            'users_by_day': list(users_by_day),
+            'top_users': [
+                {'email': u.email[:20] + '...' if len(u.email) > 20 else u.email, 'cv_count': u.cv_count}
+                for u in top_users
+            ],
+            'fun_message': self._get_fun_message(total_users, total_cvs)
+        })
+
+    def _get_fun_message(self, users, cvs):
+        """Generate a funny message based on stats"""
+        messages = [
+            f"🚀 {users} users are beating the ATS bots!",
+            f"📄 {cvs} CVs created! That's a lot of job hunting!",
+            f"🎯 Average {round(cvs/users, 1) if users else 0} CVs per user. Overachievers!",
+            f"💼 You're helping {users} people get their dream jobs!",
+            f"🤖 ATS systems hate this one simple trick... {cvs} times!",
+        ]
+        import random
+        return random.choice(messages)

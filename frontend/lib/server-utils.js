@@ -1,9 +1,9 @@
 'use server';
-import {cookies} from "next/headers";
-import {decodeJWT, getTimeDifference} from "@/lib/utils";
+import { cookies } from "next/headers";
+import { decodeJWT, getTimeDifference } from "@/lib/utils";
 import Cookies from "js-cookie";
 
-export const  decodeAndSetCookies =async (accessToken, refreshToken) => {
+export const decodeAndSetCookies = async (accessToken, refreshToken) => {
     const decodedAccess = decodeJWT(accessToken);
     const decodedRefresh = decodeJWT(refreshToken);
     const accessExp = getTimeDifference(decodedAccess.exp);
@@ -18,14 +18,16 @@ export const  decodeAndSetCookies =async (accessToken, refreshToken) => {
     const cookieStore = await cookies();
     const username = decodedAccess.username;
     const email = decodedAccess.email;
+    const is_staff = decodedAccess.is_staff || false;
 
 
     cookieStore.set('accessToken', accessToken, op);
-    cookieStore.set('refreshToken', refreshToken, {...op, maxAge: refreshExp});
-    cookieStore.set('username', username, {...op, httpOnly: false});
-    cookieStore.set('email', email, {...op, httpOnly: false});
+    cookieStore.set('refreshToken', refreshToken, { ...op, maxAge: refreshExp });
+    cookieStore.set('username', username, { ...op, httpOnly: false });
+    cookieStore.set('email', email, { ...op, httpOnly: false });
+    cookieStore.set('is_staff', is_staff.toString(), { ...op, httpOnly: false });
 
-    return {username, email};
+    return { username, email, is_staff };
 }
 
 export const removeAllUserCookies = async () => {
@@ -34,6 +36,7 @@ export const removeAllUserCookies = async () => {
     cookieStore.delete('refreshToken');
     cookieStore.delete('username');
     cookieStore.delete('email');
+    cookieStore.delete('is_staff');
 }
 
 

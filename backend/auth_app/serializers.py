@@ -37,6 +37,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['email'] = user.email
         token['username'] = user.username
+        token['is_staff'] = user.is_staff  # Add admin status to token
 
         return token
 
@@ -45,7 +46,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         data.update({
             'email': self.user.email,
-            'username': self.user.username
+            'username': self.user.username,
+            'is_staff': self.user.is_staff  # Include in response too
         })
 
         return data

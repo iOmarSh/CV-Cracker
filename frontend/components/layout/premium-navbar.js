@@ -31,7 +31,8 @@ export default function PremiumNavbar() {
     const navLinks = [
         { href: '/', label: 'Home' },
         { href: '/about', label: 'About' },
-        ...(isAuthenticated ? [{ href: '/dashboard', label: 'Dashboard' }] : [])
+        ...(isAuthenticated ? [{ href: '/dashboard', label: 'Dashboard' }] : []),
+        ...(isAuthenticated && user?.isAdmin ? [{ href: '/admin', label: '🔐 Admin' }] : [])
     ];
 
     return (

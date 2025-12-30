@@ -1,10 +1,11 @@
 import Cookies from 'js-cookie';
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 export const getEmailAndName = () => {
     const email = Cookies.get('email');
     const username = Cookies.get('username');
-    return { email, username, isAuthenticated: email !== undefined};
+    const is_staff = Cookies.get('is_staff') === 'true';
+    return { email, username, isAuthenticated: email !== undefined, isAdmin: is_staff };
 }
 
 export const decodeJWT = (token) => {
