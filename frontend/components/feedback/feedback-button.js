@@ -78,15 +78,15 @@ export default function FeedbackButton() {
                                     {/* Feedback Type */}
                                     <div>
                                         <label className="text-[#9AA3A8] text-sm mb-2 block">Type</label>
-                                        <div className="grid grid-cols-4 gap-2">
+                                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                                             {FEEDBACK_TYPES.map(({ id, label, icon: Icon, color }) => (
                                                 <button
                                                     key={id}
                                                     type="button"
                                                     onClick={() => setFeedbackType(id)}
                                                     className={`p-3 rounded-xl border transition-all flex flex-col items-center gap-1 ${feedbackType === id
-                                                            ? 'border-[#2EFF8A] bg-[#2EFF8A]/10'
-                                                            : 'border-[#2a2d32] hover:border-[#2EFF8A]/50'
+                                                        ? 'border-[#2EFF8A] bg-[#2EFF8A]/10'
+                                                        : 'border-[#2a2d32] hover:border-[#2EFF8A]/50'
                                                         }`}
                                                 >
                                                     <Icon className={color} />
