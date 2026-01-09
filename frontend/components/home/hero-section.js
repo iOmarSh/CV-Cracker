@@ -1,83 +1,108 @@
 'use client';
-import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import useAppContext from "@/hooks/useAppContext";
+import BaseModal from "@/components/auth/base-modal";
 
 /**
  * HomeHero - Premium hero section with code-style branding
  * and ATS score demo widget
  */
 export default function HomeHero() {
+    const { isAuthenticated } = useAppContext();
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
+    const router = useRouter();
+
+    const handleCTAClick = () => {
+        if (isAuthenticated === true) {
+            router.push('/dashboard');
+        } else {
+            setIsLoginOpen(true);
+        }
+    };
+
     return (
-        <section className="min-h-[calc(100vh-64px)] flex items-center py-16 px-6 lg:px-12">
-            <div className="max-w-7xl mx-auto w-full">
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    {/* Left Copy Block */}
-                    <div className="space-y-6">
-                        {/* Code Token Pre-title */}
-                        <div className="flex items-center gap-2">
-                            <span className="font-mono text-[#9AA3A8] text-sm">// cv.craft</span>
-                            <span className="px-2 py-0.5 bg-[#2EFF8A]/10 text-[#2EFF8A] text-xs font-mono rounded">v2.0</span>
+        <>
+            <section className="min-h-[calc(100vh-64px)] flex items-center py-16 px-6 lg:px-12">
+                <div className="max-w-7xl mx-auto w-full">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        {/* Left Copy Block */}
+                        <div className="space-y-6">
+                            {/* Code Token Pre-title */}
+                            <div className="flex items-center gap-2">
+                                <span className="font-mono text-[#9AA3A8] text-sm">// cv.craft</span>
+                                <span className="px-2 py-0.5 bg-[#2EFF8A]/10 text-[#2EFF8A] text-xs font-mono rounded">v2.0</span>
+                            </div>
+
+                            {/* Main Heading */}
+                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#E6E9EB] leading-tight">
+                                Build <span className="text-[#2EFF8A]">ATS-ready</span> CVs
+                                <br />
+                                Fast and Accurate
+                            </h1>
+
+                            {/* Subtext */}
+                            <p className="text-[#9AA3A8] text-lg max-w-xl leading-relaxed">
+                                Create, edit, and download pixel-perfect CVs that pass ATS checks.
+                                Choose templates, tune content, and export with confidence.
+                            </p>
+
+                            {/* CTAs */}
+                            <div className="flex flex-wrap gap-4 pt-4">
+                                <button
+                                    onClick={handleCTAClick}
+                                    className="px-6 py-3 text-base font-semibold bg-[#2EFF8A] text-[#0f1113] rounded-lg hover:bg-[#26d975] transition-colors shadow-[0_0_25px_rgba(46,255,138,0.2)]"
+                                >
+                                    Create My CV — Free
+                                </button>
+                                <button
+                                    onClick={handleCTAClick}
+                                    className="px-6 py-3 text-base font-semibold text-[#E6E9EB] rounded-lg border border-[#2a2d32] hover:bg-[#111316] transition-colors"
+                                >
+                                    Start Building Your CV
+                                </button>
+                            </div>
+
+                            {/* Stats */}
+                            <div className="flex gap-8 pt-6">
+                                <div>
+                                    <div className="text-2xl font-bold text-[#2EFF8A]">96%+</div>
+                                    <div className="text-[#9AA3A8] text-sm">ATS Score</div>
+                                </div>
+                                <div>
+                                    <div className="text-2xl font-bold text-[#E6E9EB]">50k+</div>
+                                    <div className="text-[#9AA3A8] text-sm">CVs Created</div>
+                                </div>
+                                <div>
+                                    <div className="text-2xl font-bold text-[#E6E9EB]">JSON</div>
+                                    <div className="text-[#9AA3A8] text-sm">Based</div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Main Heading */}
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#E6E9EB] leading-tight">
-                            Build <span className="text-[#2EFF8A]">ATS-ready</span> CVs
-                            <br />
-                            Fast and Accurate
-                        </h1>
-
-                        {/* Subtext */}
-                        <p className="text-[#9AA3A8] text-lg max-w-xl leading-relaxed">
-                            Create, edit, and download pixel-perfect CVs that pass ATS checks.
-                            Choose templates, tune content, and export with confidence.
-                        </p>
-
-                        {/* CTAs */}
-                        <div className="flex flex-wrap gap-4 pt-4">
-                            <Link
-                                href="/dashboard"
-                                className="px-6 py-3 text-base font-semibold bg-[#2EFF8A] text-[#0f1113] rounded-lg hover:bg-[#26d975] transition-colors shadow-[0_0_25px_rgba(46,255,138,0.2)]"
-                            >
-                                Create My CV — Free
-                            </Link>
-                            <Link
-                                href="/about"
-                                className="px-6 py-3 text-base font-semibold text-[#E6E9EB] rounded-lg border border-[#2a2d32] hover:bg-[#111316] transition-colors"
-                            >
-                                Learn More
-                            </Link>
+                        {/* Right - ATS Widget */}
+                        <div className="lg:pl-8">
+                            <ATSSnapshotWidget onCTAClick={handleCTAClick} />
                         </div>
-
-                        {/* Stats */}
-                        <div className="flex gap-8 pt-6">
-                            <div>
-                                <div className="text-2xl font-bold text-[#2EFF8A]">96%+</div>
-                                <div className="text-[#9AA3A8] text-sm">ATS Score</div>
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-[#E6E9EB]">50k+</div>
-                                <div className="text-[#9AA3A8] text-sm">CVs Created</div>
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-[#E6E9EB]">JSON</div>
-                                <div className="text-[#9AA3A8] text-sm">Based</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right - ATS Widget */}
-                    <div className="lg:pl-8">
-                        <ATSSnapshotWidget />
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            {/* Auth Modal */}
+            <BaseModal
+                isOpen={isLoginOpen}
+                isLogin={true}
+                handleAuthAction={() => { }}
+                closeModal={() => setIsLoginOpen(false)}
+            />
+        </>
     );
 }
 
 /**
  * ATSSnapshotWidget - Demo ATS checker display
  */
-function ATSSnapshotWidget() {
+function ATSSnapshotWidget({ onCTAClick }) {
     const score = 96;
 
     return (
@@ -132,12 +157,12 @@ function ATSSnapshotWidget() {
             </div>
 
             {/* CTA */}
-            <Link
-                href="/dashboard"
+            <button
+                onClick={onCTAClick}
                 className="w-full block text-center py-3 bg-[#1a1d21] border border-[#2a2d32] rounded-lg text-[#E6E9EB] font-medium hover:bg-[#2a2d32] transition-colors"
             >
                 Try It Free →
-            </Link>
+            </button>
         </div>
     );
 }
