@@ -1,74 +1,101 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import useAppContext from "@/hooks/useAppContext";
+import BaseModal from "@/components/auth/base-modal";
 
 /**
  * HomeHero - Hero section for landing page
  * Two-column layout: copy on left, ATS widget on right
  */
 const HomeHero = () => {
+    const { isAuthenticated } = useAppContext();
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+    const handleCTAClick = (e) => {
+        if (!isAuthenticated) {
+            e.preventDefault();
+            setIsLoginOpen(true);
+        }
+        // If authenticated, Link will navigate to /dashboard
+    };
+
     return (
-        <section className="min-h-[calc(100vh-56px)] flex items-center py-16 px-6 lg:px-12">
-            <div className="max-w-7xl mx-auto w-full">
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    {/* Left Copy Block */}
-                    <div className="space-y-6">
-                        {/* Code Token Pre-title */}
-                        <div className="flex items-center gap-2">
-                            <span className="font-mono text-shell-muted text-sm">// cvcraft</span>
-                            <span className="px-2 py-0.5 bg-accent-dim text-accent text-xs font-mono rounded">v2.0</span>
+        <>
+            <section className="min-h-[calc(100vh-56px)] flex items-center py-16 px-6 lg:px-12">
+                <div className="max-w-7xl mx-auto w-full">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        {/* Left Copy Block */}
+                        <div className="space-y-6">
+                            {/* Code Token Pre-title */}
+                            <div className="flex items-center gap-2">
+                                <span className="font-mono text-shell-muted text-sm">// cvcraft</span>
+                                <span className="px-2 py-0.5 bg-accent-dim text-accent text-xs font-mono rounded">v2.0</span>
+                            </div>
+
+                            {/* Main Heading */}
+                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-shell-text leading-tight">
+                                Build <span className="text-accent">ATS-ready</span> CVs
+                                <br />
+                                Fast and Accurate
+                            </h1>
+
+                            {/* Subtext */}
+                            <p className="text-shell-muted text-lg max-w-xl leading-relaxed">
+                                Create, edit, and download pixel-perfect CVs that pass ATS checks.
+                                Choose templates, tune content, and export with confidence.
+                            </p>
+
+                            {/* CTAs */}
+                            <div className="flex flex-wrap gap-4 pt-4">
+                                <Link
+                                    href="/dashboard"
+                                    onClick={handleCTAClick}
+                                    className="btn btn-primary text-base py-3 px-6 shadow-glow"
+                                >
+                                    Create My CV — Free
+                                </Link>
+                                <button
+                                    onClick={() => !isAuthenticated ? setIsLoginOpen(true) : window.location.href = '/dashboard'}
+                                    className="btn btn-ghost text-base py-3 px-6 border border-shell-border"
+                                >
+                                    Try ATS Checker
+                                </button>
+                            </div>
+
+                            {/* Stats */}
+                            <div className="flex gap-8 pt-6">
+                                <div>
+                                    <div className="text-2xl font-bold text-accent">93%</div>
+                                    <div className="text-shell-muted text-sm">Avg. ATS Score</div>
+                                </div>
+                                <div>
+                                    <div className="text-2xl font-bold text-shell-text">50k+</div>
+                                    <div className="text-shell-muted text-sm">CVs Created</div>
+                                </div>
+                                <div>
+                                    <div className="text-2xl font-bold text-shell-text">99%</div>
+                                    <div className="text-shell-muted text-sm">Export Fidelity</div>
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Main Heading */}
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-shell-text leading-tight">
-                            Build <span className="text-accent">ATS-ready</span> CVs
-                            <br />
-                            Fast and Accurate
-                        </h1>
-
-                        {/* Subtext */}
-                        <p className="text-shell-muted text-lg max-w-xl leading-relaxed">
-                            Create, edit, and download pixel-perfect CVs that pass ATS checks.
-                            Choose templates, tune content, and export with confidence.
-                        </p>
-
-                        {/* CTAs */}
-                        <div className="flex flex-wrap gap-4 pt-4">
-                            <Link
-                                href="/dashboard"
-                                className="btn btn-primary text-base py-3 px-6 shadow-glow"
-                            >
-                                Create My CV — Free
-                            </Link>
-                            <button className="btn btn-ghost text-base py-3 px-6 border border-shell-border">
-                                Try ATS Checker
-                            </button>
+                        {/* Right - ATS Widget */}
+                        <div className="lg:pl-8">
+                            <ATSSnapshotWidget />
                         </div>
-
-                        {/* Stats */}
-                        <div className="flex gap-8 pt-6">
-                            <div>
-                                <div className="text-2xl font-bold text-accent">93%</div>
-                                <div className="text-shell-muted text-sm">Avg. ATS Score</div>
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-shell-text">50k+</div>
-                                <div className="text-shell-muted text-sm">CVs Created</div>
-                            </div>
-                            <div>
-                                <div className="text-2xl font-bold text-shell-text">99%</div>
-                                <div className="text-shell-muted text-sm">Export Fidelity</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right - ATS Widget */}
-                    <div className="lg:pl-8">
-                        <ATSSnapshotWidget />
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            {/* Auth Modal */}
+            <BaseModal
+                isOpen={isLoginOpen}
+                isLogin={true}
+                handleAuthAction={() => { }}
+                closeModal={() => setIsLoginOpen(false)}
+            />
+        </>
     );
 };
 

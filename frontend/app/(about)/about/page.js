@@ -5,7 +5,7 @@ import FloatingCode from "@/components/effects/floating-code";
 
 function Profile() {
     return (
-        <div className="sticky top-24 w-full md:w-1/3 mb-8 text-center md:text-left">
+        <div className="md:sticky md:top-24 w-full md:w-1/3 mb-8 text-center md:text-left">
             {/* Profile Image and Name */}
             <div className="mb-8 text-center">
                 <div className="relative inline-block">
