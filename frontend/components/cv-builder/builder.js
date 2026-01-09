@@ -94,26 +94,40 @@ export default function BuilderPage({ id, data }) {
                 {isMobilePreviewOpen && (
                     <div className="sidebar:hidden fixed inset-0 z-[100] bg-[#0f1113]">
                         {/* Header */}
-                        <div className="flex items-center justify-between p-4 bg-[#111316] border-b border-[#2a2d32]">
-                            <h3 className="text-lg font-bold text-[#E6E9EB]">CV Preview</h3>
-                            <button
-                                onClick={() => setIsMobilePreviewOpen(false)}
-                                className="w-10 h-10 flex items-center justify-center text-[#9AA3A8] hover:text-white bg-[#2a2d32] rounded-lg transition-colors"
-                            >
-                                <FaTimes className="text-xl" />
-                            </button>
+                        <div className="flex items-center justify-between p-3 bg-[#111316] border-b border-[#2a2d32]">
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => setIsMobilePreviewOpen(false)}
+                                    className="w-9 h-9 flex items-center justify-center text-[#9AA3A8] hover:text-white bg-[#2a2d32] rounded-lg transition-colors"
+                                >
+                                    <FaTimes className="text-lg" />
+                                </button>
+                                <h3 className="text-base font-bold text-[#E6E9EB]">CV Preview</h3>
+                            </div>
+                            <span className="text-xs text-[#6b7280]">Pinch to zoom</span>
                         </div>
 
-                        {/* Preview Content - Scrollable with zoom */}
-                        <div className="h-[calc(100vh-60px)] overflow-auto p-4">
-                            <div className="flex justify-center">
-                                <div style={{
-                                    transform: 'scale(0.45)',
-                                    transformOrigin: 'top center',
-                                    width: '794px',
-                                    minWidth: '794px'
-                                }}>
-                                    <ResumePreview data={resumeData} />
+                        {/* Preview Content - Full width scrollable */}
+                        <div
+                            className="h-[calc(100vh-56px)] overflow-auto touch-pan-x touch-pan-y"
+                            style={{ WebkitOverflowScrolling: 'touch' }}
+                        >
+                            <div className="p-2">
+                                <div
+                                    id="mobile-resume-preview"
+                                    className="mx-auto bg-white shadow-2xl rounded-lg overflow-hidden"
+                                    style={{
+                                        width: '100%',
+                                        maxWidth: '400px',
+                                    }}
+                                >
+                                    <div style={{
+                                        transform: 'scale(0.5)',
+                                        transformOrigin: 'top left',
+                                        width: '200%',
+                                    }}>
+                                        <ResumePreview data={resumeData} />
+                                    </div>
                                 </div>
                             </div>
                         </div>

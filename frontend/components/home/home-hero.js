@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import useAppContext from "@/hooks/useAppContext";
 import BaseModal from "@/components/auth/base-modal";
 
@@ -11,13 +11,14 @@ import BaseModal from "@/components/auth/base-modal";
 const HomeHero = () => {
     const { isAuthenticated } = useAppContext();
     const [isLoginOpen, setIsLoginOpen] = useState(false);
+    const router = useRouter();
 
-    const handleCTAClick = (e) => {
+    const handleCTAClick = () => {
         if (!isAuthenticated) {
-            e.preventDefault();
             setIsLoginOpen(true);
+        } else {
+            router.push('/dashboard');
         }
-        // If authenticated, Link will navigate to /dashboard
     };
 
     return (
@@ -48,15 +49,14 @@ const HomeHero = () => {
 
                             {/* CTAs */}
                             <div className="flex flex-wrap gap-4 pt-4">
-                                <Link
-                                    href="/dashboard"
+                                <button
                                     onClick={handleCTAClick}
                                     className="btn btn-primary text-base py-3 px-6 shadow-glow"
                                 >
                                     Create My CV — Free
-                                </Link>
+                                </button>
                                 <button
-                                    onClick={() => !isAuthenticated ? setIsLoginOpen(true) : window.location.href = '/dashboard'}
+                                    onClick={handleCTAClick}
                                     className="btn btn-ghost text-base py-3 px-6 border border-shell-border"
                                 >
                                     Try ATS Checker

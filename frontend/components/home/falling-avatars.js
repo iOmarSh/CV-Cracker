@@ -17,13 +17,15 @@ export default function FallingAvatars() {
     }, []);
 
     useEffect(() => {
-        // On mobile: fewer avatars, no delays, smaller sizes
+        // On mobile: more avatars with no delays, smaller sizes
         // On desktop: original behavior
         const mobileAvatars = [
-            { id: 1, left: 5, delay: 0, duration: 12, size: 50 },
-            { id: 2, left: 30, delay: 0, duration: 14, size: 45 },
-            { id: 3, left: 55, delay: 0, duration: 13, size: 50 },
-            { id: 4, left: 80, delay: 0, duration: 15, size: 45 },
+            { id: 1, left: 3, delay: 0, duration: 11, size: 45 },
+            { id: 2, left: 18, delay: 0, duration: 13, size: 40 },
+            { id: 3, left: 35, delay: 0, duration: 12, size: 45 },
+            { id: 4, left: 52, delay: 0, duration: 14, size: 40 },
+            { id: 5, left: 70, delay: 0, duration: 11, size: 45 },
+            { id: 6, left: 88, delay: 0, duration: 13, size: 40 },
         ];
 
         const desktopAvatars = [

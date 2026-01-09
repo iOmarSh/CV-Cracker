@@ -29,8 +29,8 @@ const ResumeTitleDownload = () => {
         syncResumeData(newData);
     };
 
-    const syncAndSave = () => {
-        PdfSave({ printDivId: "resume" });
+    const syncAndSave = async () => {
+        await PdfSave({ printDivId: "resume" });
     }
 
     // Save and go back to dashboard
