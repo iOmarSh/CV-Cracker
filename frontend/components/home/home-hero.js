@@ -14,10 +14,11 @@ const HomeHero = () => {
     const router = useRouter();
 
     const handleCTAClick = () => {
-        if (!isAuthenticated) {
-            setIsLoginOpen(true);
-        } else {
+        // Explicitly check for true - anything else (false, undefined, null) shows login
+        if (isAuthenticated === true) {
             router.push('/dashboard');
+        } else {
+            setIsLoginOpen(true);
         }
     };
 

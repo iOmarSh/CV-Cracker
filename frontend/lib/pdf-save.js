@@ -8,6 +8,12 @@ const isMobile = () => {
         || window.innerWidth < 768;
 };
 
+// Detect iOS Safari
+const isIOS = () => {
+    if (typeof window === 'undefined') return false;
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
+};
+
 // Original desktop print method
 const desktopPrint = (printDivId) => {
     const printElement = document.getElementById(printDivId);
@@ -32,10 +38,11 @@ const desktopPrint = (printDivId) => {
 
 // Mobile PDF generation using html2canvas + jsPDF
 const mobilePdfSave = async (printDivId) => {
-    let printElement = document.getElementById(printDivId);
+    // Find the resumePage element (has proper styling with margins)
+    let printElement = document.querySelector('.resumePage');
 
     if (!printElement) {
-        printElement = document.querySelector('.resumePage');
+        printElement = document.getElementById(printDivId);
     }
     if (!printElement) {
         printElement = document.getElementById('resumePages');
@@ -61,16 +68,19 @@ const mobilePdfSave = async (printDivId) => {
 
         await new Promise(resolve => setTimeout(resolve, 500));
 
+        // Clone the resumePage element (preserves margins and padding)
         const clone = printElement.cloneNode(true);
         clone.style.position = 'absolute';
         clone.style.left = '-9999px';
         clone.style.top = '0';
-        clone.style.width = '210mm';
-        clone.style.minWidth = '210mm';
+        clone.style.width = '794px'; // A4 width in px at 96dpi
+        clone.style.minWidth = '794px';
+        clone.style.height = 'auto';
         clone.style.backgroundColor = '#ffffff';
+        clone.style.padding = '40px'; // Ensure padding for margins
         document.body.appendChild(clone);
 
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise(resolve => setTimeout(resolve, 300));
 
         const canvas = await html2canvas(clone, {
             scale: 2,
@@ -78,23 +88,64 @@ const mobilePdfSave = async (printDivId) => {
             logging: false,
             backgroundColor: '#ffffff',
             allowTaint: true,
+            width: 794,
+            windowWidth: 794,
         });
 
         document.body.removeChild(clone);
 
-        const imgWidth = 210;
-        const pageHeight = 297;
+        const imgWidth = 210; // A4 width in mm
+        const pageHeight = 297; // A4 height in mm
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
         const pdf = new jsPDF('p', 'mm', 'a4');
         const imgData = canvas.toDataURL('image/jpeg', 0.95);
 
-        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, Math.min(imgHeight, pageHeight));
+        // Add margins to the PDF
+        const margin = 0; // The margins are already in the captured image
+        pdf.addImage(imgData, 'JPEG', margin, margin, imgWidth - (margin * 2), Math.min(imgHeight, pageHeight - (margin * 2)));
 
         document.getElementById('pdf-loading')?.remove();
 
         const timestamp = new Date().toISOString().slice(0, 10);
-        pdf.save(`resume-${timestamp}.pdf`);
+        const filename = `resume-${timestamp}.pdf`;
+
+        // iOS Safari workaround - open PDF in new tab
+        if (isIOS()) {
+            const pdfBlob = pdf.output('blob');
+            const blobUrl = URL.createObjectURL(pdfBlob);
+
+            // Create a link and click it to open in new tab
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+
+            // Try to trigger download on iOS
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([pdfBlob], filename, { type: 'application/pdf' })] })) {
+                try {
+                    await navigator.share({
+                        files: [new File([pdfBlob], filename, { type: 'application/pdf' })],
+                        title: 'Resume PDF',
+                    });
+                } catch (err) {
+                    // Fallback: open in new tab
+                    window.open(blobUrl, '_blank');
+                    setTimeout(() => {
+                        alert('PDF opened in new tab. Use Share button to save.');
+                    }, 500);
+                }
+            } else {
+                // Fallback: open in new tab
+                window.open(blobUrl, '_blank');
+                setTimeout(() => {
+                    alert('PDF opened in new tab. Tap and hold to save.');
+                }, 500);
+            }
+        } else {
+            // Android and other mobile browsers
+            pdf.save(filename);
+        }
 
     } catch (error) {
         console.error('Error generating PDF:', error);
