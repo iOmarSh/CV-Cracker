@@ -2,10 +2,8 @@
 import RoundedBtnWithIcon from "@/components/general/rounded-btn-with-icon";
 import { FaEdit, FaArrowLeft, FaRobot, FaTimes, FaCopy, FaCheck } from "react-icons/fa";
 import { MdSystemUpdateAlt } from "react-icons/md";
-import WinPrint from "@/lib/pdf-save";
 import useAppContext from "@/hooks/useAppContext";
 import { useState } from "react";
-import WinPrintPDF from "@/lib/prepare-pdf";
 import PdfSave from "@/lib/pdf-save";
 import { useRouter } from "next/navigation";
 
@@ -134,70 +132,75 @@ const ResumeTitleDownload = () => {
             sidebar:shadow-[0_-25px_15px_15px_#0f1113] sidebar:shadow-[#0f1113]
             sticky top-0 z-[6] mb-6 w-full shadow-sm">
                 <div
-                    className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-2 sm:gap-4
+                    className="flex items-center justify-between gap-3
                     bg-[#111316] px-3 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 lg:px-9 lg:py-5 rounded-lg"
                 >
-                    {/* Back Button - Now saves before navigating */}
-                    <button
-                        onClick={handleBackToDashboard}
-                        className="flex items-center justify-center p-2 rounded-full bg-[#1a1d21] hover:bg-[#2a2d32] transition-colors"
-                        title="Save and go back to Dashboard"
-                    >
-                        <FaArrowLeft className="text-[#9AA3A8] hover:text-[#E6E9EB]" size={16} />
-                    </button>
+                    {/* Left side - Back button and Title */}
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                        {/* Back Button */}
+                        <button
+                            onClick={handleBackToDashboard}
+                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-full bg-[#1a1d21] hover:bg-[#2a2d32] transition-colors"
+                            title="Save and go back to Dashboard"
+                        >
+                            <FaArrowLeft className="text-[#9AA3A8] hover:text-[#E6E9EB]" size={16} />
+                        </button>
 
-                    {/* Title Section */}
-                    <div className="flex items-center mr-2 sm:mr-8 min-w-0">
-                        {isEditing ? (
-                            <input
-                                type="text"
-                                value={title}
-                                onChange={handleTitleChange}
-                                onBlur={handleSaveTitle}
-                                className="text-[#E6E9EB] bg-transparent truncate text-base sm:text-xl md:text-2xl font-extrabold border-b border-[#2a2d32] focus:outline-none focus:border-[#2EFF8A] max-w-[120px] sm:max-w-[200px] md:max-w-[300px] w-full"
-                                autoFocus
-                            />
-                        ) : (
-                            <p
-                                className="text-[#E6E9EB] truncate text-base sm:text-xl md:text-2xl font-extrabold cursor-pointer hover:opacity-80 max-w-[120px] sm:max-w-[200px] md:max-w-[300px] w-full"
-                                onClick={handleEditToggle}
-                            >
-                                {resumeData.title || "Untitled"}
-                            </p>
-                        )}
-                        {!isEditing && (
-                            <RoundedBtnWithIcon
-                                iconSize={16}
-                                icon={FaEdit}
-                                iconColor={"#7d8189"}
-                                onClick={handleEditToggle}
-                                className="ml-1 sm:ml-2 flex-shrink-0"
-                            />
-                        )}
+                        {/* Title Section */}
+                        <div className="flex items-center min-w-0 flex-1">
+                            {isEditing ? (
+                                <input
+                                    type="text"
+                                    value={title}
+                                    onChange={handleTitleChange}
+                                    onBlur={handleSaveTitle}
+                                    className="text-[#E6E9EB] bg-transparent text-base sm:text-xl md:text-2xl font-extrabold border-b border-[#2a2d32] focus:outline-none focus:border-[#2EFF8A] w-full max-w-[300px]"
+                                    autoFocus
+                                />
+                            ) : (
+                                <p
+                                    className="text-[#E6E9EB] text-base sm:text-xl md:text-2xl font-extrabold cursor-pointer hover:opacity-80 truncate"
+                                    onClick={handleEditToggle}
+                                    title={resumeData.title || "Untitled"}
+                                >
+                                    {resumeData.title || "Untitled"}
+                                </p>
+                            )}
+                            {!isEditing && (
+                                <button
+                                    onClick={handleEditToggle}
+                                    className="ml-2 flex-shrink-0 p-1.5 rounded-lg hover:bg-[#1a1d21] transition-colors"
+                                >
+                                    <FaEdit className="text-[#7d8189] hover:text-[#9AA3A8]" size={16} />
+                                </button>
+                            )}
+                        </div>
                     </div>
 
-                    {/* AI Helper Button - Prominent */}
-                    <button
-                        onClick={() => setIsPromptOpen(true)}
-                        className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 transition-all text-white font-bold text-sm shadow-lg"
-                        title="Use AI to generate your CV"
-                    >
-                        <FaRobot className="text-lg" />
-                        <span className="hidden sm:inline">AI Helper</span>
-                    </button>
+                    {/* Right side - Buttons */}
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                        {/* AI Helper Button - Matches Download button style */}
+                        <RoundedBtnWithIcon
+                            iconSize={12}
+                            className={
+                                "bg-[#1a1d21] hover:bg-[#2a2d32] text-[#E6E9EB] border border-[#2a2d32] h-10 w-10 md:h-10 md:w-full md:min-w-[110px] md:px-5 md:py-2 font-bold transition-colors"
+                            }
+                            text={"AI Helper"}
+                            icon={FaRobot}
+                            onClick={() => setIsPromptOpen(true)}
+                        />
 
-                    {/* Download Button */}
-                    <RoundedBtnWithIcon
-                        iconSize={12}
-                        className={
-                            "bg-[#2EFF8A] text-[#0f1113] py-10 h-12 w-12 md:h-10 md:w-full md:min-w-[120px] md:px-7 md:py-2 font-bold"
-                        }
-                        text={"Download"}
-                        icon={MdSystemUpdateAlt}
-                        onClick={syncAndSave}
-                    />
-
-
+                        {/* Download Button */}
+                        <RoundedBtnWithIcon
+                            iconSize={12}
+                            className={
+                                "bg-[#2EFF8A] hover:bg-[#26d975] text-[#0f1113] h-10 w-10 md:h-10 md:w-full md:min-w-[120px] md:px-5 md:py-2 font-bold transition-colors"
+                            }
+                            text={"Download"}
+                            icon={MdSystemUpdateAlt}
+                            onClick={syncAndSave}
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -215,8 +218,8 @@ const ResumeTitleDownload = () => {
                         {/* Header */}
                         <div className="flex items-center justify-between p-4 border-b border-[#2a2d32]">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 flex items-center justify-center">
-                                    <FaRobot className="text-white text-xl" />
+                                <div className="w-10 h-10 rounded-full bg-[#2EFF8A]/10 flex items-center justify-center">
+                                    <FaRobot className="text-[#2EFF8A] text-xl" />
                                 </div>
                                 <div>
                                     <h2 className="text-lg font-bold text-[#E6E9EB]">AI CV Generator</h2>
@@ -246,7 +249,7 @@ const ResumeTitleDownload = () => {
                                 onClick={handleCopyPrompt}
                                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold transition-all ${copied
                                         ? 'bg-green-500 text-white'
-                                        : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-500 hover:to-blue-500'
+                                        : 'bg-[#2EFF8A] text-[#0f1113] hover:bg-[#26d975]'
                                     }`}
                             >
                                 {copied ? (
