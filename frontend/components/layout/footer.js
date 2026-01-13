@@ -55,7 +55,7 @@ export default function Footer() {
                     {/* Brand & Copyright */}
                     <div className="text-center md:text-right">
                         <Link href="/" className="font-mono text-[#9AA3A8] hover:text-[#E6E9EB] transition-colors">
-                            cv<span className="text-[#2EFF8A]">.</span>craft
+                            work<span className="text-[#2EFF8A]">.</span>cv
                         </Link>
                         <p className="text-[#6b7280] text-xs mt-1">
                             © {new Date().getFullYear()} All rights reserved

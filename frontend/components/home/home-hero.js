@@ -31,7 +31,7 @@ const HomeHero = () => {
                         <div className="space-y-6">
                             {/* Code Token Pre-title */}
                             <div className="flex items-center gap-2">
-                                <span className="font-mono text-shell-muted text-sm">// cvcraft</span>
+                                <span className="font-mono text-shell-muted text-sm">// work.cv</span>
                                 <span className="px-2 py-0.5 bg-accent-dim text-accent text-xs font-mono rounded">v2.0</span>
                             </div>
 

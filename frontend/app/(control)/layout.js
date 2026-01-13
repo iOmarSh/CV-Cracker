@@ -7,7 +7,7 @@ import { geistMono, geistSans } from "@/app/fonts";
 import FeedbackButton from "@/components/feedback/feedback-button";
 
 export const metadata = {
-    title: "cv.craft — Dashboard",
+    title: "work.cv — Dashboard",
     description: "Build ATS-Ready CVs",
     icons: {
         icon: "/favicon.png",

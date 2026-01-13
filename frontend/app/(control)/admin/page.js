@@ -342,9 +342,9 @@ export default function AdminPage() {
                                     <div className="flex items-start justify-between mb-3">
                                         <div className="flex items-center gap-3">
                                             <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${item.type === 'bug' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
-                                                    item.type === 'suggestion' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
-                                                        item.type === 'praise' ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30' :
-                                                            'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                                                item.type === 'suggestion' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' :
+                                                    item.type === 'praise' ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30' :
+                                                        'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                                                 }`}>
                                                 {item.type}
                                             </span>
@@ -383,7 +383,7 @@ export default function AdminPage() {
 
                 {/* Footer */}
                 <div className="text-center text-[#9AA3A8]/60 text-xs mt-20 mb-8 border-t border-[#2a2d32] pt-8">
-                    <p>Cv.Craft Admin Console v2.1 • Secure Connection • Authorized Personnel Only</p>
+                    <p>Work.CV Admin Console v2.1 • Secure Connection • Authorized Personnel Only</p>
                 </div>
             </div>
         </div>

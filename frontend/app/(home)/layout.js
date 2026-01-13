@@ -5,7 +5,7 @@ import AppProvider from "@/context/app-provider";
 import FeedbackButton from "@/components/feedback/feedback-button";
 
 export const metadata = {
-    title: "cv.craft — Build ATS-Ready CVs",
+    title: "work.cv — Build ATS-Ready CVs",
     description: "Create, edit, and download pixel-perfect CVs that pass ATS checks.",
     icons: {
         icon: "/favicon.png",

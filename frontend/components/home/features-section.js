@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 /**
- * FeaturesSection - Highlights key features of cv.craft
+ * FeaturesSection - Highlights key features of work.cv
  */
 export default function FeaturesSection() {
     const features = [
