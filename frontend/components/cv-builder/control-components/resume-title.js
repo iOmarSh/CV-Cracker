@@ -147,19 +147,19 @@ const ResumeTitleDownload = () => {
                         </button>
 
                         {/* Title Section */}
-                        <div className="flex items-center min-w-0 flex-1">
+                        <div className="flex items-center min-w-0">
                             {isEditing ? (
                                 <input
                                     type="text"
                                     value={title}
                                     onChange={handleTitleChange}
                                     onBlur={handleSaveTitle}
-                                    className="text-[#E6E9EB] bg-transparent text-base sm:text-xl md:text-2xl font-extrabold border-b border-[#2a2d32] focus:outline-none focus:border-[#2EFF8A] w-full max-w-[300px]"
+                                    className="text-[#E6E9EB] bg-transparent text-base sm:text-xl md:text-2xl font-extrabold border-b border-[#2a2d32] focus:outline-none focus:border-[#2EFF8A] w-full"
                                     autoFocus
                                 />
                             ) : (
                                 <p
-                                    className="text-[#E6E9EB] text-base sm:text-xl md:text-2xl font-extrabold cursor-pointer hover:opacity-80 truncate"
+                                    className="text-[#E6E9EB] text-base sm:text-xl md:text-2xl font-extrabold cursor-pointer hover:opacity-80"
                                     onClick={handleEditToggle}
                                     title={resumeData.title || "Untitled"}
                                 >
@@ -248,8 +248,8 @@ const ResumeTitleDownload = () => {
                             <button
                                 onClick={handleCopyPrompt}
                                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold transition-all ${copied
-                                        ? 'bg-green-500 text-white'
-                                        : 'bg-[#2EFF8A] text-[#0f1113] hover:bg-[#26d975]'
+                                    ? 'bg-green-500 text-white'
+                                    : 'bg-[#2EFF8A] text-[#0f1113] hover:bg-[#26d975]'
                                     }`}
                             >
                                 {copied ? (
