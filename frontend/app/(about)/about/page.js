@@ -61,7 +61,7 @@ export default async function AboutPage() {
                     }} />
 
                 <h1 className="text-3xl sm:text-4xl font-bold mb-8 text-center text-[#E6E9EB] relative z-10">
-                    work<span className="text-[#2EFF8A]">.</span>cv — Bypass ATS with 96-100% Score
+                    cv<span className="text-[#2EFF8A]">.</span>crack — Bypass ATS with 96-100% Score
                 </h1>
 
                 <section className="py-8 sm:py-12 relative z-10">

@@ -383,7 +383,7 @@ export default function AdminPage() {
 
                 {/* Footer */}
                 <div className="text-center text-[#9AA3A8]/60 text-xs mt-20 mb-8 border-t border-[#2a2d32] pt-8">
-                    <p>Work.CV Admin Console v2.1 • Secure Connection • Authorized Personnel Only</p>
+                    <p>CV.Crack Admin Console v2.1 • Secure Connection • Authorized Personnel Only</p>
                 </div>
             </div>
         </div>

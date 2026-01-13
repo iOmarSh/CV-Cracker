@@ -5,8 +5,8 @@ import AppProvider from "@/context/app-provider";
 import FeedbackButton from "@/components/feedback/feedback-button";
 
 export const metadata = {
-    title: "work.cv — About",
-    description: "Learn about work.cv and how it helps you land interviews.",
+    title: "cv.crack — About",
+    description: "Learn about cv.crack and how it helps you land interviews.",
 };
 
 export default function AboutLayout({ children }) {

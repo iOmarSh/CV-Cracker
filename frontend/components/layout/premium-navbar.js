@@ -77,13 +77,13 @@ export default function PremiumNavbar() {
                 >
                     <div className="relative">
                         <span className="font-mono text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white">
-                            work
+                            cv
                         </span>
                         <span className="font-mono text-xl sm:text-2xl md:text-3xl font-bold text-[#2EFF8A] animate-pulse">
                             .
                         </span>
                         <span className="font-mono text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white">
-                            cv
+                            crack
                         </span>
                         {/* Glow effect on hover */}
                         <div className="absolute -inset-2 bg-[#2EFF8A]/0 group-hover:bg-[#2EFF8A]/5 rounded-lg transition-all duration-300 -z-10"></div>
@@ -174,7 +174,7 @@ export default function PremiumNavbar() {
                         {/* Close Button */}
                         <div className="flex items-center justify-between p-4 border-b border-[#2a2d32]">
                             <span className="font-mono text-lg font-bold text-white">
-                                work<span className="text-[#2EFF8A]">.</span>cv
+                                cv<span className="text-[#2EFF8A]">.</span>crack
                             </span>
                             <button
                                 onClick={() => setIsMobileMenuOpen(false)}

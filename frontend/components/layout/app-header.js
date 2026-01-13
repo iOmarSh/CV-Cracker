@@ -15,7 +15,7 @@ const AppHeader = ({ showNav = true }) => {
             {/* Brand */}
             <Link href="/" className="flex items-center gap-2 text-shell-text hover:text-accent transition-colors">
                 <span className="text-accent font-mono text-sm">{'<'}</span>
-                <span className="font-semibold text-lg tracking-tight">work.cv</span>
+                <span className="font-semibold text-lg tracking-tight">cv.crack</span>
                 <span className="text-accent font-mono text-sm">{'/>'}</span>
             </Link>
 

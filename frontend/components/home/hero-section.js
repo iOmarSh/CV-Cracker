@@ -30,7 +30,7 @@ export default function HomeHero() {
                         <div className="space-y-6">
                             {/* Code Token Pre-title */}
                             <div className="flex items-center gap-2">
-                                <span className="font-mono text-[#9AA3A8] text-sm">// work.cv</span>
+                                <span className="font-mono text-[#9AA3A8] text-sm">// cv.crack</span>
                                 <span className="px-2 py-0.5 bg-[#2EFF8A]/10 text-[#2EFF8A] text-xs font-mono rounded">v2.0</span>
                             </div>
 
