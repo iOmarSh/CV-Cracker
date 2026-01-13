@@ -2,143 +2,81 @@
 import { useState } from 'react';
 import { FaHome, FaFileAlt, FaTachometerAlt, FaRobot, FaTimes, FaCopy, FaCheck } from "react-icons/fa";
 
-const LLM_PROMPT_TEMPLATE = `I want you to help me create a professional CV/Resume in JSON format. Please follow this exact structure and replace the example data with information relevant to my background.
+const LLM_PROMPT_TEMPLATE = `Act as a Professional Resume Strategist and ATS (Applicant Tracking System) Expert. Your goal is to help me create a perfect, 100% ATS-compliant CV that will be exported as a specific JSON object compatible with my website's parser.
 
-Here is the JSON template you must follow:
+### STEP 1: THE DATA GATHERING
+To begin, please provide all the following information in one go (don't worry about formatting, just provide the raw details):
+
+1. **Basic Info**: Full Name, Job Position, Phone (with country code), Email, and Location (City, Country).
+2. **Links**: LinkedIn and GitHub URLs.
+3. **Education**: School name, Degree, GPA, and Graduation Date.
+4. **Work & Projects**: List your jobs and projects. For each, include the name, your role, dates, tools used, and what you accomplished. 
+5. **Skills**: List all your technical tools, languages, and soft skills.
+6. **Languages**: What languages do you speak and at what level?
+
+### STEP 2: ATS OPTIMIZATION RULES (INTERNAL)
+Once you receive my data, you must transform it using these strict guidelines:
+- **No Personal Pronouns**: Never use "I", "me", or "my".
+- **Numericized Data**: Always use digits (e.g., "5", "25%") instead of words.
+- **Quantified Results**: Create at least 5 measurable achievements (e.g., "Reduced latency by 15%" or "Managed 10+ people").
+- **Dynamic Skill Categorization**: Do NOT just use "Hard/Soft Skills." Group skills logically based on my data (e.g., "Programming Languages," "DevOps Tools," "Management").
+- **Skills Ratio**: Ensure the total count of technical skills exceeds soft skills.
+- **Vocabulary**: Maintain a professional vocabulary and reading level (Level 6+).
+- **Word Count**: The final text should be between 300 and 1200 words.
+
+### STEP 3: THE JSON OUTPUT (STRICT STRUCTURE)
+Your final response must be ONLY the JSON object. Follow this structure exactly:
 
 {
-  "name": "Mama Baba",
-  "position": "Cyber Security Specialist",
-  "contactInformation": "+201022332222",
-  "email": "mama@gmail.com",
-  "address": "Oklahoma, United States",
+  "name": "",
+  "position": "",
+  "contactInformation": "",
+  "email": "",
+  "address": "",
   "socialMedia": [
-    { "socialMedia": "LinkedIn", "link": "https://linkedin.com/mamababa", "displayName": "linkedin.com/mamababa" },
-    { "socialMedia": "Github", "link": "https://github.com/mamababa", "displayName": "github.com/mamababa" }
+    { "socialMedia": "LinkedIn", "link": "", "displayName": "" },
+    { "socialMedia": "Github", "link": "", "displayName": "" }
   ],
-  "summary": [
-    {
-      "text": "Cyber Security Specialist with strong academic grounding and hands-on experience in artificial intelligence training, data analysis, and secure model development. Proven ability to work with large-scale datasets, improve model accuracy, and support AI systems through structured data labeling and validation. Academic background from a top-tier institution with a GPA of 3.9/4.0, complemented by real-world freelance experience in AI operations. Demonstrated strengths in Python, Java, machine learning frameworks, and applied risk analysis. Career focus centers on securing intelligent systems, improving model reliability, and supporting data-driven security decisions across scalable platforms.",
-      "isShownInPreview": true
-    }
-  ],
+  "summary": [{ "text": "Professional summary reflecting career goals...", "isShownInPreview": true }],
   "educations": [
-    {
-      "school": "Harvard University",
-      "degree": "Bachelor of Science in Cyber Security",
-      "startYear": "2022",
-      "endYear": "2026",
-      "notes": "GPA: 3.9 / 4.0",
-      "isShownInPreview": true
-    }
+    { "school": "", "degree": "", "startYear": "", "endYear": "", "notes": "GPA: X.X / 4.0", "isShownInPreview": true }
   ],
   "courses": [],
   "workExperience": [
     {
-      "company": "Scale AI",
-      "position": "AI Trainer",
-      "startYear": "2022-01-01",
-      "endYear": "2026-01-01",
-      "workType": "Remote",
-      "location": "San Francisco, United States",
-      "companyField": "Artificial Intelligence and Data Services",
-      "technologies": ["Python", "Java", "Data Labeling", "Machine Learning Pipelines"],
-      "achievements": [
-        { "text": "Labeled and validated 50,000+ data samples to support supervised learning models used in production AI systems.", "isShownInPreview": true },
-        { "text": "Improved model training accuracy by 18% through consistent annotation standards and error reduction techniques.", "isShownInPreview": true },
-        { "text": "Reduced data inconsistency rates by 22% by applying structured quality control checks across datasets.", "isShownInPreview": true },
-        { "text": "Supported training of 5+ machine learning models by preparing clean, security-aware datasets.", "isShownInPreview": true },
-        { "text": "Collaborated with distributed engineering teams to meet 100% of delivery deadlines for labeled data batches.", "isShownInPreview": true }
-      ],
-      "isPartTime": false,
-      "isShownInPreview": true
+      "company": "", "position": "", "startYear": "YYYY-MM-DD", "endYear": "YYYY-MM-DD", "workType": "Remote/On-site", "location": "", "companyField": "",
+      "technologies": ["Skill1", "Skill2"], 
+      "achievements": [{ "text": "Action verb + Task + Result with numbers...", "isShownInPreview": true }],
+      "isPartTime": false, "isShownInPreview": true
     }
   ],
   "projects": [
     {
-      "title": "JAJA",
-      "description": "Machine learning project focused on detecting physical bruises and assessing medical risk levels using image-based analysis. The system was designed with accuracy, data integrity, and model evaluation as core objectives.",
-      "technologies": [
-        { "text": "TensorFlow", "isShownInPreview": true },
-        { "text": "Python", "isShownInPreview": true },
-        { "text": "Computer Vision", "isShownInPreview": true }
-      ],
-      "link": "https://github.com/mamababa/mama",
-      "startYear": "2024",
-      "endYear": "2024",
-      "achievements": [
-        { "text": "Achieved 95% detection accuracy through optimized model architecture and dataset preprocessing.", "isShownInPreview": true },
-        { "text": "Trained and evaluated the model on 10,000+ labeled images to ensure consistent performance.", "isShownInPreview": true },
-        { "text": "Reduced false positive rates by 20% through iterative testing and hyperparameter tuning.", "isShownInPreview": true }
-      ],
+      "title": "", "description": "", 
+      "technologies": [{ "text": "Skill Name", "isShownInPreview": true }], 
+      "link": "", "startYear": "", "endYear": "", 
+      "achievements": [{ "text": "Quantifiable achievement...", "isShownInPreview": true }], 
       "isShownInPreview": true
     }
   ],
   "skills": [
     {
-      "title": "Programming Languages",
-      "skills": [
-        { "text": "Python", "isShownInPreview": true },
-        { "text": "Java", "isShownInPreview": true }
-      ],
-      "isShownInPreview": true
-    },
-    {
-      "title": "Machine Learning & AI",
-      "skills": [
-        { "text": "TensorFlow", "isShownInPreview": true },
-        { "text": "Data Labeling", "isShownInPreview": true },
-        { "text": "Model Training", "isShownInPreview": true },
-        { "text": "Model Evaluation", "isShownInPreview": true }
-      ],
-      "isShownInPreview": true
-    },
-    {
-      "title": "Cyber Security & Data Practices",
-      "skills": [
-        { "text": "Data Integrity", "isShownInPreview": true },
-        { "text": "Risk Analysis", "isShownInPreview": true },
-        { "text": "Secure Data Handling", "isShownInPreview": true }
-      ],
-      "isShownInPreview": true
-    },
-    {
-      "title": "Professional Skills",
-      "skills": [
-        { "text": "Analytical Thinking", "isShownInPreview": true },
-        { "text": "Problem Solving", "isShownInPreview": true },
-        { "text": "Technical Documentation", "isShownInPreview": true },
-        { "text": "Remote Collaboration", "isShownInPreview": true }
-      ],
+      "title": "Category Name (e.g. Programming Languages)",
+      "skills": [{ "text": "Skill Name", "isShownInPreview": true }],
       "isShownInPreview": true
     }
   ],
   "languages": [
-    { "title": "English", "level": "Professional", "isShownInPreview": true },
-    { "title": "German", "level": "Native", "isShownInPreview": true }
+    { "title": "English", "level": "Fluent", "isShownInPreview": true },
+    { "title": "Arabic", "level": "Native", "isShownInPreview": true }
   ],
   "titles": {
-    "profile": "PROFILE",
-    "experience": "WORK EXPERIENCE",
-    "education": "EDUCATION",
-    "certification": "ACHIEVEMENTS & LEADERSHIP",
-    "skills": "TECHNICAL SKILLS",
-    "languages": "LANGUAGES",
-    "projects": "PROJECTS"
+    "profile": "PROFILE", "experience": "WORK EXPERIENCE", "education": "EDUCATION", "certification": "ACHIEVEMENTS & LEADERSHIP", "skills": "TECHNICAL SKILLS", "languages": "LANGUAGES", "projects": "PROJECTS"
   },
   "order": ["contactInformation", "profile", "workExperience", "projects", "education", "courses", "skills", "languages"]
 }
 
-Please ask me about my:
-1. Personal information (name, contact, location)
-2. Professional summary
-3. Work experience
-4. Education
-5. Projects
-6. Skills
-7. Languages
-
-Then generate a JSON in the exact same format above with my information.`;
+I am ready. Please ask me for all my information now in one shot.`;
 
 export default function BuilderSideBar() {
     const [isPromptOpen, setIsPromptOpen] = useState(false);

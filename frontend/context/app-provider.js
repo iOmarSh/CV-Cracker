@@ -144,12 +144,22 @@ const AppProvider = ({ children }) => {
 
     const updateResumeData = (newData) => {
         setResumeData(newData);
+        // Auto-save when data is updated
+        syncResumeData(newData);
     }
+
+    // Combined function that updates and saves
+    const updateAndSaveResume = useCallback((newData) => {
+        setResumeData(newData);
+        syncResumeData(newData);
+    }, [syncResumeData]);
 
     const OnEditSectionTitle = (e, section) => {
         const value = e.target.innerText;
         const updatedTitles = { ...resumeData.titles, [section]: value };
-        setResumeData({ ...resumeData, titles: updatedTitles });
+        const newData = { ...resumeData, titles: updatedTitles };
+        setResumeData(newData);
+        syncResumeData(newData);
     }
 
 
@@ -176,6 +186,7 @@ const AppProvider = ({ children }) => {
             setResumeData,
             globalRefs,
             updateResumeData,
+            updateAndSaveResume,
             OnEditSectionTitle,
             controlPanel,
             lastControlPanel,
